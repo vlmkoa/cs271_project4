@@ -30,14 +30,16 @@ void BST<Data, Key>::insert(const Data &d, const Key &k)
     }
 
     Node *cur = root;
+    Node *p = nullptr;
     while (cur != nullptr)
     {
+        p = cur;
         if (cur->key < k)
             cur = cur->right;
         else
             cur = cur->left;
     }
-    cur = new Node(d, k);
+    cur = new Node(d, k, p);
 }
 
 template <class Data, class Key>
@@ -55,12 +57,72 @@ Data BST<Data, Key>::get(const Key &k)
     {
         return Data{};
     }
-    return cur->key;
+    return cur->data;
+}
+template <class Data, class Key>
+void BST<Data, Key>::transplant(Node *u, Node *v)
+{
+    if (!u->p)
+    {
+        root = v;
+    }
+    else if (u == u->p->left)
+    {
+        u->p->left = v;
+    }
+    else
+    {
+        u->p->right = v;
+    }
+    if (v)
+    {
+        v->p = u->p;
+    }
 }
 
 template <class Data, class Key>
 void BST<Data, Key>::remove(const Key &k)
 {
+
+    Node *cur = root;
+    while (cur != nullptr && cur->key != k)
+    {
+        if (cur->key < k)
+            cur = cur->right;
+        else
+            cur = cur->left;
+    }
+    if (!cur)
+    {
+        cout << "No node with provided key" << endl;
+        return;
+    }
+    if (!cur->left)
+    {
+        transplant(cur, cur->right);
+    }
+    else if (!cur->right)
+    {
+        transplant(cur, cur->left);
+    }
+    else
+    {
+        Node *suc = cur->right;
+        while (suc->left)
+        {
+            suc = suc->left;
+        }
+        if (suc->p != cur)
+        {
+            transplant(suc, suc->right);
+            suc->right = cur->right;
+            suc->right->p = suc;
+        }
+        transplant(cur, suc);
+        suc->left = cur->left;
+        suc->left->p = suc;
+    }
+    delete cur;
 }
 
 template <class Data, class Key>

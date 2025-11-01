@@ -17,11 +17,13 @@ private:
         Node *right;
         Node *p;
         Node(const Data &d, const Key &k) : data(d), key(k), left(nullptr), right(nullptr), p(nullptr) {}
+        Node(const Data &d, const Key &k, Node *p) : data(d), key(k), left(nullptr), right(nullptr), p(p) {}
     };
 
     Node *root;
 
     // helper
+    void transplant(Node *u, Node *v);
 
 public:
     BST();
