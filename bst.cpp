@@ -73,3 +73,14 @@ Key BST<Data, Key>::max_key()
     }
     return curr->key
 }
+
+template <class Data, class Key>
+Key BST<Data, Key>::min_key()
+{
+    Node *cur = root;
+    while (curr != nullptr && curr->left != nullptr)
+    {
+        curr = curr->left;
+    }
+    return curr->key
+}
