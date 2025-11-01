@@ -64,23 +64,43 @@ void BST<Data, Key>::remove(const Key &k)
 }
 
 template <class Data, class Key>
+Data BST<Data, Key>::max_data()
+{
+}
+
+template <class Data, class Key>
 Key BST<Data, Key>::max_key()
 {
     Node *cur = root;
-    while (curr != nullptr && curr->right != nullptr)
+    while (cur != nullptr && cur->right != nullptr)
     {
-        curr = curr->right;
+        cur = cur->right;
     }
-    return curr->key
+    return cur->key
+}
+
+template <class Data, class Key>
+Data BST<Data, Key>::min_data()
+{
 }
 
 template <class Data, class Key>
 Key BST<Data, Key>::min_key()
 {
     Node *cur = root;
-    while (curr != nullptr && curr->left != nullptr)
+    while (cur != nullptr && cur->left != nullptr)
     {
-        curr = curr->left;
+        cur = cur->left;
     }
-    return curr->key
+    return cur->key
+}
+
+template <class Data, class Key>
+Key BST<Data, Key>::successor(const Key &k)
+{
+}
+
+template <class Data, class Key>
+string BST<Data, Key>::in_order(){
+    string result = ""
 }
