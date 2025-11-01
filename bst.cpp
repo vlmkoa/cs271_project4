@@ -23,12 +23,6 @@ bool BST<Data, Key>::empty()
 template <class Data, class Key>
 void BST<Data, Key>::insert(const Data &d, const Key &k)
 {
-    if (empty())
-    {
-        root = new Node *(d, k);
-        return;
-    }
-
     Node *cur = root;
     Node *p = nullptr;
     while (cur != nullptr)
@@ -39,7 +33,18 @@ void BST<Data, Key>::insert(const Data &d, const Key &k)
         else
             cur = cur->left;
     }
-    cur = new Node(d, k, p);
+    if (!p)
+    {
+        root = new Node(d, k);
+    }
+    else if (k < p->key)
+    {
+        p->left = new Node(d, k, p);
+    }
+    else
+    {
+        p->right = new Node(d, k, p);
+    }
 }
 
 template <class Data, class Key>
