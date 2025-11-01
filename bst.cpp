@@ -101,6 +101,7 @@ Key BST<Data, Key>::successor(const Key &k)
 }
 
 template <class Data, class Key>
-string BST<Data, Key>::in_order(){
-    string result = ""
+string BST<Data, Key>::in_order()
+{
+    string result = "";
 }
