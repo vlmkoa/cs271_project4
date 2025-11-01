@@ -20,23 +20,26 @@ private:
     };
 
     Node *root;
-    int size;
+
+    // helper
 
 public:
     BST();
     ~BST();
 
     bool empty();
-    void insert(const Data &d, const Key &key);
-    Data get(const Key &Key);
-    void remove(const Key &key);
+    void insert(const Data &d, const Key &k);
+    Data get(const Key &k);
+    void remove(const Key &k);
     Data max_data();
     Key max_key();
     Data min_data();
     Key min_key();
-    Key successor(const Key &key);
+    Key successor(const Key &k);
     string in_order();
     void trim(const Key &low, const Key &high);
 };
+
+#include "bst.cpp"
 
 #endif
