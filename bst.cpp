@@ -62,3 +62,14 @@ template <class Data, class Key>
 void BST<Data, Key>::remove(const Key &k)
 {
 }
+
+template <class Data, class Key>
+Key BST<Data, Key>::max_key()
+{
+    Node *cur = root;
+    while (curr != nullptr && curr->right != nullptr)
+    {
+        curr = curr->right;
+    }
+    return curr->key
+}
