@@ -224,35 +224,33 @@ void BST<Data, Key>::remove(const Key &k)
 template <class Data, class Key>
 Data BST<Data, Key>::max_data()
 {
+    Node *cur = root;
+    move_to_max(cur);
+    return cur->data;
 }
 
 template <class Data, class Key>
 Key BST<Data, Key>::max_key()
 {
     Node *cur = root;
-    // move_to_max(cur);
-    while (cur != nullptr && cur->right != nullptr)
-    {
-        cur = cur->right;
-    }
+    move_to_max(cur);
     return cur->key;
 }
 
 template <class Data, class Key>
 Data BST<Data, Key>::min_data()
 {
+    Node *cur = root;
+    move_to_min(cur);
+    return cur->data;
 }
 
 template <class Data, class Key>
 Key BST<Data, Key>::min_key()
 {
     Node *cur = root;
-    // move_to_min(cur);
-    while (cur != nullptr && cur->left != nullptr)
-    {
-        cur = cur->left;
-    }
-    return cur->key
+    move_to_min(cur);
+    return cur->key;
 }
 
 template <class Data, class Key>
