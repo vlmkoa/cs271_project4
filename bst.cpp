@@ -21,22 +21,35 @@ BST<Data, Key>::~BST()
 template <class Data, class Key>
 bool BST<Data, Key>::empty()
 {
-    return (root == nullptr);
+    return (!root);
 }
 
+/**=====================================================
+ *   insert(d,k): this function inserts a Node with
+ *   provided data and key values. It initialize the root
+ *   of the tree if tree is empty. If tree is not empty
+ *   then it compares the value of the provided key to find
+ *   the inserting Node's valid parent and whether it is
+ *   the left or right child of its parent.
+ *
+ *   Precondition: Key k is not used in the tree.
+ *   Postcondition: Node with Data d and Key k is inserted
+ *   to its correct position in the tree.
+ *=======================================================*/
 template <class Data, class Key>
 void BST<Data, Key>::insert(const Data &d, const Key &k)
 {
     Node *cur = root;
-    Node *p = nullptr;
+    Node *p = nullptr; // pointer to track parent of cur
     while (cur != nullptr)
     {
-        p = cur;
+        p = cur; // parent becomes cur before cur moves to its child
         if (cur->key < k)
             cur = cur->right;
         else
             cur = cur->left;
     }
+    // if p is null, then cur is null, then root need to be initialized
     if (!p)
     {
         root = new Node(d, k);
@@ -51,11 +64,20 @@ void BST<Data, Key>::insert(const Data &d, const Key &k)
     }
 }
 
+/**=====================================================
+ *   get(k): this function returns the Data d of the Node
+ *   with provided key.
+ *
+ *   Precondition: Key k exists in the tree
+ *   Postcondition: Data d of Node with provided key
+ *   returned.
+ *=======================================================*/
 template <class Data, class Key>
 Data BST<Data, Key>::get(const Key &k)
 {
     Node *cur = root;
-    while (cur != nullptr && cur->key != k)
+    // find node with key
+    while (cur && cur->key != k)
     {
         if (cur->key < k)
             cur = cur->right;
@@ -64,35 +86,55 @@ Data BST<Data, Key>::get(const Key &k)
     }
     if (cur == nullptr)
     {
-        return Data{};
+        return Data{}; // return initialized value of type Data if no key match
     }
     return cur->data;
 }
+
+/**=====================================================
+ *   transplant(u,v): this function lets Node v to become
+ *   child of Node u's parent, or the root if u is root
+ *
+ *   Precondition: Node* u is a valid element in the
+ *   tree. If v not null, subtree rooted at v do not
+ *   violate BST properties when in u's position.
+ *   Postcondition: v in u's position. BST properties
+ *   maintained.
+ *=======================================================*/
 template <class Data, class Key>
 void BST<Data, Key>::transplant(Node *u, Node *v)
 {
-    if (!u->p)
+    if (!u->p) // if u is root
     {
         root = v;
     }
+    // if u is left child of its parent
     else if (u == u->p->left)
     {
-        u->p->left = v;
+        u->p->left = v; // u's parent left child becomes v
     }
     else
     {
-        u->p->right = v;
+        u->p->right = v; // u's parent right child becomes v
     }
+    // if v is not null, then v's parent becomes u's parent
     if (v)
     {
         v->p = u->p;
     }
 }
 
+/**=====================================================
+ *   remove(k): this function remove Node with Key k
+ *   from the tree.
+ *
+ *   Precondition: k must be a valid key in the tree
+ *   Postcondition: Node with key k is removed
+ *=======================================================*/
 template <class Data, class Key>
 void BST<Data, Key>::remove(const Key &k)
 {
-
+    // find node with key
     Node *cur = root;
     while (cur != nullptr && cur->key != k)
     {
@@ -106,16 +148,22 @@ void BST<Data, Key>::remove(const Key &k)
         cout << "No node with provided key" << endl;
         return;
     }
+    // if cur has one child then its only child's subtree maintains
+    // comparative property of cur relative to cur's parent. Transplanting
+    // the child using transplant(). If cur has no children, then its spot
+    // becomes a nullptr.
     if (!cur->left)
     {
-        transplant(cur, cur->right);
+        transplant(cur, cur->right); // now right child of cur becomes child of cur's parent
     }
     else if (!cur->right)
     {
-        transplant(cur, cur->left);
+        transplant(cur, cur->left); // now left child of cur becomes child of cur's parent
     }
+    // if both children present
     else
     {
+        // find the children successor of the Node
         Node *suc = cur->right;
         while (suc->left)
         {
@@ -123,11 +171,13 @@ void BST<Data, Key>::remove(const Key &k)
         }
         if (suc->p != cur)
         {
-            transplant(suc, suc->right);
+            transplant(suc, suc->right); // replace suc with suc->right so that its parent can get remaining subtree of suc's children
+            // suc then takes right child of cur
             suc->right = cur->right;
             suc->right->p = suc;
         }
-        transplant(cur, suc);
+        transplant(cur, suc); // cur's parent replace cur with subtree rooted at suc
+        // suc takes left child of cur
         suc->left = cur->left;
         suc->left->p = suc;
     }
@@ -177,6 +227,15 @@ string BST<Data, Key>::in_order()
     string result = "";
 }
 
+/**=====================================================
+ *   to_string(): this function returns the string
+ *   of keys in the tree, in left to right, top down
+ *   order.
+ *
+ *   Precondition: None
+ *   Postcondition: A string of keys in left-right,
+ *   top down order
+ *=======================================================*/
 template <class Data, class Key>
 string BST<Data, Key>::to_string()
 {
@@ -184,19 +243,28 @@ string BST<Data, Key>::to_string()
     queue<Node *> q;
     if (root)
         q.push(root);
-    bool doOnce = false;
+    bool skip = true; // bool for skipping first space
+
+    // while loop adds the head Node key to the string stream,
+    // removes the head from queue, then adds its child(ren) to
+    // the tail of queue, so that each node in i-th layer
+    // is added after all nodes in i-1 th layer added, from
+    // left to right order.
     while (!q.empty())
     {
         Node *cur = q.front();
         q.pop();
-        if (doOnce)
+        if (!skip)
+        {
             ss << " ";
+            skip = false; // skipped once
+        }
+
         ss << cur->key;
         if (cur->left)
             q.push(cur->left);
         if (cur->right)
             q.push(cur->right);
-        doOnce = true;
     }
     return ss.str();
 }
