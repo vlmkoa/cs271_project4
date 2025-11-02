@@ -176,6 +176,8 @@ string BST<Data, Key>::in_order()
 {
     string result = "";
 }
+
+template <class Data, class Key>
 string BST<Data, Key>::to_string()
 {
     stringstream ss;
