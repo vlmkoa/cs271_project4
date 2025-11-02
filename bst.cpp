@@ -229,8 +229,9 @@ string BST<Data, Key>::in_order()
 
 /**=====================================================
  *   to_string(): this function returns the string
- *   of keys in the tree, in left to right, top down
- *   order.
+ *   of keys in the tree. Each node in i-th layer is added
+ *   to the stringstream after all nodes in i-1 th layer added,
+ *   from left to right order.
  *
  *   Precondition: None
  *   Postcondition: A string of keys in left-right,
@@ -245,11 +246,8 @@ string BST<Data, Key>::to_string()
         q.push(root);
     bool skip = true; // bool for skipping first space
 
-    // while loop adds the head Node key to the string stream,
-    // removes the head from queue, then adds its child(ren) to
-    // the tail of queue, so that each node in i-th layer
-    // is added after all nodes in i-1 th layer added, from
-    // left to right order.
+    // while loop adds the queue's head Node's key to the string stream,
+    // removes the head from queue, then adds its child(ren) to the tail of queue.
     while (!q.empty())
     {
         Node *cur = q.front();
