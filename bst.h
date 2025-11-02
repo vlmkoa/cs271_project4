@@ -25,6 +25,10 @@ private:
 
     // helper
     void transplant(Node *u, Node *v);
+    void move_to_key(Node *&cur, Key k);
+    void move_to_min(Node *&cur); // moves a node to min node of the subtree rooted at the node
+    void move_to_max(Node *&cur);
+    void move_to_successor(Node *&cur);
 
 public:
     BST();

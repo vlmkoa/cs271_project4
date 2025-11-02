@@ -123,6 +123,40 @@ void BST<Data, Key>::transplant(Node *u, Node *v)
         v->p = u->p;
     }
 }
+template <class Data, class Key>
+void BST<Data, Key>::move_to_key(Node *&cur, Key k)
+{
+    while (cur && cur->key != k)
+    {
+        if (cur->key < k)
+            cur = cur->right;
+        else
+            cur = cur->left;
+    }
+}
+
+template <class Data, class Key>
+void BST<Data, Key>::move_to_min(Node *&cur)
+{
+    while (cur != nullptr && cur->left != nullptr)
+    {
+        cur = cur->left;
+    }
+}
+
+template <class Data, class Key>
+void BST<Data, Key>::move_to_max(Node *&cur)
+{
+    while (cur != nullptr && cur->right != nullptr)
+    {
+        cur = cur->right;
+    }
+}
+
+template <class Data, class Key>
+void BST<Data, Key>::move_to_successor(Node *&cur)
+{
+}
 
 /**=====================================================
  *   remove(k): this function remove Node with Key k
@@ -197,7 +231,7 @@ Key BST<Data, Key>::max_key()
     {
         cur = cur->right;
     }
-    return cur->key
+    return cur->key;
 }
 
 template <class Data, class Key>
