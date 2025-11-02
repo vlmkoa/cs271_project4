@@ -77,13 +77,14 @@ Data BST<Data, Key>::get(const Key &k)
 {
     Node *cur = root;
     // find node with key
-    while (cur && cur->key != k)
-    {
-        if (cur->key < k)
-            cur = cur->right;
-        else
-            cur = cur->left;
-    }
+    // while (cur && cur->key != k)
+    // {
+    //     if (cur->key < k)
+    //         cur = cur->right;
+    //     else
+    //         cur = cur->left;
+    // }
+    move_to_key(cur, k);
     if (cur == nullptr)
     {
         return Data{}; // return initialized value of type Data if no key match
@@ -124,7 +125,7 @@ void BST<Data, Key>::transplant(Node *u, Node *v)
     }
 }
 template <class Data, class Key>
-void BST<Data, Key>::move_to_key(Node *&cur, Key k)
+void BST<Data, Key>::move_to_key(Node *&cur, const Key &k)
 {
     while (cur && cur->key != k)
     {
@@ -170,13 +171,14 @@ void BST<Data, Key>::remove(const Key &k)
 {
     // find node with key
     Node *cur = root;
-    while (cur != nullptr && cur->key != k)
-    {
-        if (cur->key < k)
-            cur = cur->right;
-        else
-            cur = cur->left;
-    }
+    // while (cur != nullptr && cur->key != k)
+    // {
+    //     if (cur->key < k)
+    //         cur = cur->right;
+    //     else
+    //         cur = cur->left;
+    // }
+    move_to_key(cur, k);
     if (!cur)
     {
         cout << "No node with provided key" << endl;
@@ -199,10 +201,11 @@ void BST<Data, Key>::remove(const Key &k)
     {
         // find the children successor of the Node
         Node *suc = cur->right;
-        while (suc->left)
-        {
-            suc = suc->left;
-        }
+        // while (suc->left)
+        // {
+        //     suc = suc->left;
+        // }
+        move_to_min(suc);
         if (suc->p != cur)
         {
             transplant(suc, suc->right); // replace suc with suc->right so that its parent can get remaining subtree of suc's children
@@ -227,6 +230,7 @@ template <class Data, class Key>
 Key BST<Data, Key>::max_key()
 {
     Node *cur = root;
+    // move_to_max(cur);
     while (cur != nullptr && cur->right != nullptr)
     {
         cur = cur->right;
@@ -243,6 +247,7 @@ template <class Data, class Key>
 Key BST<Data, Key>::min_key()
 {
     Node *cur = root;
+    // move_to_min(cur);
     while (cur != nullptr && cur->left != nullptr)
     {
         cur = cur->left;
@@ -253,12 +258,16 @@ Key BST<Data, Key>::min_key()
 template <class Data, class Key>
 Key BST<Data, Key>::successor(const Key &k)
 {
+    // move_to_key(cur, k);
+    // move_to_successor(cur);
 }
 
 template <class Data, class Key>
 string BST<Data, Key>::in_order()
 {
     string result = "";
+    // move_to_min
+    // iteratively move_to_successor until null
 }
 
 /**=====================================================
