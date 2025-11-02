@@ -2,6 +2,7 @@
 #define BST_H
 
 #include <iostream>
+#include <string>
 
 using namespace std;
 
@@ -40,6 +41,7 @@ public:
     Key successor(const Key &k);
     string in_order();
     void trim(const Key &low, const Key &high);
+    string to_string();
 };
 
 #include "bst.cpp"

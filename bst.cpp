@@ -1,5 +1,9 @@
 #include "bst.h"
 #include <iostream>
+#include <sstream>
+#include <string>
+#include <cmath>
+#include <queue>
 
 using namespace std;
 
@@ -171,4 +175,26 @@ template <class Data, class Key>
 string BST<Data, Key>::in_order()
 {
     string result = "";
+}
+string BST<Data, Key>::to_string()
+{
+    stringstream ss;
+    queue<Node *> q;
+    if (root)
+        q.push(root);
+    bool doOnce = false;
+    while (!q.empty())
+    {
+        Node *cur = q.front();
+        q.pop();
+        if (doOnce)
+            ss << " ";
+        ss << cur->key;
+        if (cur->left)
+            q.push(cur->left);
+        if (cur->right)
+            q.push(cur->right);
+        doOnce = true;
+    }
+    return ss.str();
 }
