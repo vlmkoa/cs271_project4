@@ -29,6 +29,7 @@ private:
     void move_to_min(Node *&cur); // moves a node to min node of the subtree rooted at the node
     void move_to_max(Node *&cur);
     void move_to_successor(Node *&cur);
+    void in_order_helper(Node *curr, stringstream &ss, bool &first);
 
 public:
     BST();

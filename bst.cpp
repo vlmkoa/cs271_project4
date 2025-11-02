@@ -263,9 +263,24 @@ Key BST<Data, Key>::successor(const Key &k)
 template <class Data, class Key>
 string BST<Data, Key>::in_order()
 {
-    string result = "";
-    // move_to_min
-    // iteratively move_to_successor until null
+    stringstream ss;
+    bool first = true;
+    in_order_helper(root, ss, first);
+    return ss.str();
+}
+
+template <class Data, class Key>
+void BST<Data, Key>::in_order_helper(Node *curr, stringstream &ss, bool &first)
+{
+    if (curr == nullptr)
+        return;
+
+    in_order_helper(curr->left, ss, first);
+    if (!first)
+        ss << " ";
+    ss << curr->key;
+    first = false;
+    in_order_helper(curr->right, ss, first);
 }
 
 /**=====================================================
