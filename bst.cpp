@@ -45,10 +45,14 @@ void BST<Data, Key>::insert(const Data &d, const Key &k)
     while (cur != nullptr)
     {
         p = cur; // parent becomes cur before cur moves to its child
-        if (cur->key < k)
-            cur = cur->right;
-        else
+        if (k < cur->key)
+        {
             cur = cur->left;
+        }
+        else
+        {
+            cur = cur->right;
+        }
     }
     // if p is null, then cur is null, then root need to be initialized
     if (!p)
@@ -135,10 +139,14 @@ void BST<Data, Key>::move_to_key(Node *&cur, const Key &k)
 {
     while (cur && cur->key != k)
     {
-        if (cur->key < k)
-            cur = cur->right;
-        else
+        if (k < cur->key)
+        {
             cur = cur->left;
+        }
+        else
+        {
+            cur = cur->right;
+        }
     }
 }
 
