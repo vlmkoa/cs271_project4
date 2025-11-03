@@ -31,7 +31,7 @@ private:
     void move_to_successor(Node *&cur);
     void in_order_helper(Node *curr, stringstream &ss, bool &first);
     void clear_subtree(Node *n);
-    Node* trim_helper(Node *n, const Key &low, const Key &high, Node *parent);
+    Node *trim_helper(Node *n, const Key &low, const Key &high, Node *parent);
 
 public:
     BST();
