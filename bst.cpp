@@ -26,13 +26,13 @@ bool BST<Data, Key>::empty()
 
 /**=====================================================
  *   insert(d,k): this function inserts a Node with
- *   provided data and key values. It initialize the root
+ *   provided data and key values. It initializes the root
  *   of the tree if tree is empty. If tree is not empty
  *   then it compares the value of the provided key to find
  *   the inserting Node's valid parent and whether it is
  *   the left or right child of its parent.
  *
- *   Precondition: Key k is not used in the tree.
+ *   Precondition: None
  *
  *   Postcondition: Node with Data d and Key k is inserted
  *   to its correct position in the tree.
@@ -49,7 +49,7 @@ void BST<Data, Key>::insert(const Data &d, const Key &k)
         {
             cur = cur->left;
         }
-        else // k >= cur->key (allows duplicates to go right)
+        else // k >= cur->key (allows duplicate keys to go right)
         {
             cur = cur->right;
         }
