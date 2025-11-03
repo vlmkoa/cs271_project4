@@ -266,21 +266,24 @@ Key BST<Data, Key>::successor(const Key &k)
 {
     Node *cur = root;
     move_to_key(cur, k);
-    if (cur != nullptr)
+    if (!cur)
     {
-        if (cur->right)
-        {
-            return cur->right.min_key();
-        }
-        Node *pcur = cur->p;
-        while ((pcur) && (cur == pcur->right))
-        {
-            cur = pcur;
-            pcur = pcur->p;
-        }
-        return pcur;
+        cout << "Invalid key" << endl;
+        return Key{};
     }
-    return cur;
+    Node *suc = cur->right;
+    if (suc)
+    {
+        move_to_min(suc);
+        return suc->key;
+    }
+    suc = cur->p;
+    while ((suc) && (cur == suc->right))
+    {
+        cur = suc;
+        suc = suc->p;
+    }
+    return suc->key;
 }
 
 template <class Data, class Key>
