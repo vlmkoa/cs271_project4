@@ -16,7 +16,7 @@ int main()
     string filename = "binhex.txt";
 
     cout << "Creating Binary Search Tree" << filename << "..." << endl;
-    BST<char, string> *bst = create_bst(filename);
+    BST<string, string> *bst = create_bst(filename);
     cout << "Binary Search Tree Created" << endl;
     cout << endl;
 
