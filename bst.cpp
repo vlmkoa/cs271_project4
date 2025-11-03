@@ -397,8 +397,8 @@ string BST<Data, Key>::to_string()
         if (!skip)
         {
             ss << " ";
-            skip = false; // skipped once
         }
+        skip = false; // skipped once
 
         ss << cur->key;
         if (cur->left)
