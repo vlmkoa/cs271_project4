@@ -1,9 +1,6 @@
 #ifndef BST_H
 #define BST_H
 
-#include <iostream>
-#include <string>
-
 using namespace std;
 
 template <class Data, class Key>

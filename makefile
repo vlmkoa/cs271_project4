@@ -1,4 +1,4 @@
-all: test usecase
+all: clean test usecase
 
 test: test_bst.o
 	g++ -o test test_bst.o
