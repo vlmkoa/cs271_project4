@@ -15,6 +15,7 @@ BST<Data, Key>::BST()
 template <class Data, class Key>
 BST<Data, Key>::~BST()
 {
+    clear_subtree(root);
 }
 
 template <class Data, class Key>
@@ -195,11 +196,11 @@ void BST<Data, Key>::remove(const Key &k)
     // comparative property of cur relative to cur's parent. Transplanting
     // the child using transplant(). If cur has no children, then its spot
     // becomes a nullptr.
-    //if (!cur->left && !cur->right && root == cur) {
-        //root = nullptr;
-        //delete cur;
+    // if (!cur->left && !cur->right && root == cur) {
+    // root = nullptr;
+    // delete cur;
     //}
-    /*else */if (!cur->left)
+    /*else */ if (!cur->left)
     {
         transplant(cur, cur->right); // now right child of cur becomes child of cur's parent
     }
@@ -235,6 +236,8 @@ void BST<Data, Key>::remove(const Key &k)
 template <class Data, class Key>
 Data BST<Data, Key>::max_data()
 {
+    if (!root)
+        return Data{};
     Node *cur = root;
     move_to_max(cur);
     return cur->data;
@@ -243,6 +246,8 @@ Data BST<Data, Key>::max_data()
 template <class Data, class Key>
 Key BST<Data, Key>::max_key()
 {
+    if (!root)
+        return Key{};
     Node *cur = root;
     move_to_max(cur);
     return cur->key;
@@ -251,6 +256,8 @@ Key BST<Data, Key>::max_key()
 template <class Data, class Key>
 Data BST<Data, Key>::min_data()
 {
+    if (!root)
+        return Data{};
     Node *cur = root;
     move_to_min(cur);
     return cur->data;
@@ -259,6 +266,8 @@ Data BST<Data, Key>::min_data()
 template <class Data, class Key>
 Key BST<Data, Key>::min_key()
 {
+    if (!root)
+        return Key{};
     Node *cur = root;
     move_to_min(cur);
     return cur->key;

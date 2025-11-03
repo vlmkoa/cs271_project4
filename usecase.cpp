@@ -52,9 +52,9 @@ string convert(BST<string, string> *bst, string bin)
         string chunk = bin.substr(start, chunk_len);
 
         // Pad with zeros on the LEFT if less than 4 bits
-        while (chunk.length() < 4)
+        if (chunk.length() < 4)
         {
-            chunk = "0" + chunk;
+            chunk.insert(0, 4 - chunk.length(), '0');
         }
 
         // Look up the hex string for this 4-bit chunk
