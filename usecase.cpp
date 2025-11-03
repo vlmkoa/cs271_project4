@@ -27,7 +27,7 @@ BST<string, string> *create_bst(string fname)
         size_t comma_pos = line.find(',');
         if (comma_pos != string::npos)
         {
-            string hex_string = line[0];
+            string hex_string = line.substr(0, comma_pos);
             string binary = line.substr(comma_pos + 1);
             bst->insert(hex_string, binary);
         }
