@@ -106,6 +106,19 @@ void test_insert()
         {
             cout << "Incorrect result of inserting keys {5, 2, 7, 1, 3, 4, 6, 9, 8, 10} twice. Expected 5 2 7 1 3 6 9 1 2 4 5 6 8 10 3 4 7 8 9 10 but got : " << bst_str << endl;
         }
+
+        // insert left unbalanced, nonstring data, string key
+        string lets[10] = {"j", "i", "h", "g", "f", "e", "d", "c", "b", "a"};
+        BST<int, string> diff_bst;
+        for (int i = 0; i < 10; i++)
+        {
+            diff_bst.insert(i, lets[i]);
+        }
+        string diff_str = diff_bst.to_string();
+        if (diff_str != "j i h g f e d c b a")
+        {
+            cout << "Incorrect result of inserting letters a-j in reverse order. Expected j i h g f e d c b a but got : " << diff_str << endl;
+        }
     }
     catch (exception &e)
     {
