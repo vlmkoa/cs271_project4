@@ -196,7 +196,11 @@ void BST<Data, Key>::remove(const Key &k)
     // comparative property of cur relative to cur's parent. Transplanting
     // the child using transplant(). If cur has no children, then its spot
     // becomes a nullptr.
-    if (!cur->left)
+    //if (!cur->left && !cur->right && root == cur) {
+        //root = nullptr;
+        //delete cur;
+    //}
+    /*else */if (!cur->left)
     {
         transplant(cur, cur->right); // now right child of cur becomes child of cur's parent
     }

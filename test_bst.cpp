@@ -1,8 +1,8 @@
 //
 //  test_bst_example.cpp
-//  CS 271 BST Project: Example Test File
+//  CS 271 BST Project
 //
-//  Created by Dr. Stacey Truex
+//  Created by Ava, Sunho, Ryan
 //
 
 #include <stdlib.h>
@@ -19,12 +19,28 @@ void test_empty()
         BST<string, int> bst;
         if (!bst.empty())
         {
-            cout << "Incorrect empty result." << endl;
+            cout << "Incorrect empty result when bst empty." << endl;
         }
         bst.insert("one", 1);
         if (bst.empty())
         {
-            cout << "Incorrect empty result." << endl;
+            cout << "Incorrect empty result when bst has one item." << endl;
+        }
+        bst.insert("dos", 2);
+        if (bst.empty())
+        {
+            cout << "Incorrect empty result when bst has multiple items." << endl;
+        }
+        bst.remove(1);
+        if (bst.empty())
+        {
+            cout << "Incorrect empty result when an item was removed from bst." << endl;
+        }
+        bst.remove(2);
+        string bst_str = bst.to_string();
+        if (bst.empty())
+        {
+            cout << "Incorrect empty result when all items were removed from bst. Result: " << bst_str << " end result." << endl;
         }
     }
     catch (exception &e)
@@ -37,6 +53,7 @@ void test_insert()
 {
     try
     {
+        // normal insert
         BST<string, int> bst;
         bst.insert("one", 1);
         string bst_str = bst.to_string();
@@ -53,6 +70,19 @@ void test_insert()
         {
             cout << "Incorrect result of inserting keys 1-10 in order. Expected 1 2 3 4 5 6 7 8 9 10 but got : " << bst_str << endl;
         }
+
+        // insert same keys again
+        for (int i = 1; i <= 10; i++)
+        {
+            bst.insert("some data", i);
+        }
+        bst_str = bst.to_string();
+        if (bst_str != "1 2 3 4 5 6 7 8 9 10")
+        {
+            cout << "Incorrect result of inserting keys 1-10 in order when already in BST. Expected 1 2 3 4 5 6 7 8 9 10 but got : " << bst_str << endl;
+        }
+
+        // insert balanced tree
         int vals[10] = {5, 2, 7, 1, 3, 4, 6, 9, 8, 10};
         BST<string, int> balanced_bst;
         for (int i = 0; i < 10; i++)
