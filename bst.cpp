@@ -49,7 +49,7 @@ void BST<Data, Key>::insert(const Data &d, const Key &k)
         {
             cur = cur->left;
         }
-        else
+        else // k >= cur->key (allows duplicates to go right)
         {
             cur = cur->right;
         }
