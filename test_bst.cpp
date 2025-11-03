@@ -78,9 +78,9 @@ void test_insert()
             bst.insert("some data", i);
         }
         bst_str = bst.to_string();
-        if (bst_str != "1 1 2 2 3 3 4 4 5 5 6 6 7 7 8 8 9 9 10 10")
+        if (bst_str != "1 2 1 3 2 4 3 5 4 6 5 7 6 8 7 9 8 10 9 10")
         {
-            cout << "Incorrect result of inserting keys 1-10 in order when already in BST. Expected 1 1 2 2 3 3 4 4 5 5 6 6 7 7 8 8 9 9 10 10 but got : " << bst_str << endl;
+            cout << "Incorrect result of inserting keys 1-10 in order when already in BST. Expected 1 2 1 3 2 4 3 5 4 6 5 7 6 8 7 9 8 10 9 10 but got : " << bst_str << endl;
         }
 
         // insert balanced tree
@@ -94,6 +94,17 @@ void test_insert()
         if (bst_str != "5 2 7 1 3 6 9 4 8 10")
         {
             cout << "Incorrect result of inserting keys {5, 2, 7, 1, 3, 4, 6, 9, 8, 10}. Expected 5 2 7 1 3 6 9 4 8 10 but got : " << bst_str << endl;
+        }
+        
+        // insert balanced keys again
+        for (int i = 0; i < 10; i++)
+        {
+            balanced_bst.insert("some data", vals[i]);
+        }
+        bst_str = balanced_bst.to_string();
+        if (bst_str != "5 2 7 1 3 6 9 1 2 4 5 6 8 10 3 4 7 8 9 10")
+        {
+            cout << "Incorrect result of inserting keys {5, 2, 7, 1, 3, 4, 6, 9, 8, 10} twice. Expected 5 2 7 1 3 6 9 1 2 4 5 6 8 10 3 4 7 8 9 10 but got : " << bst_str << endl;
         }
     }
     catch (exception &e)
