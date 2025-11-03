@@ -1,6 +1,7 @@
 #include "bst.h"
 #include <fstream>
 #include <sstream>
+#include <algorithm>
 
 using namespace std;
 
@@ -29,6 +30,7 @@ BST<string, string> *create_bst(string fname)
         {
             string hex_string = line.substr(0, comma_pos);
             string binary = line.substr(comma_pos + 1);
+            // Insert with binary as KEY (for lookup) and hex as DATA
             bst->insert(hex_string, binary);
         }
     }
@@ -41,20 +43,23 @@ string convert(BST<string, string> *bst, string bin)
 {
     string result = "";
 
-    // Process binary string in chunks of 4 bits
-    for (size_t i = 0; i < bin.length(); i += 4)
+    // Process binary string in chunks of 4 bits from RIGHT to LEFT
+    int len = bin.length();
+    for (int i = len; i > 0; i -= 4)
     {
-        string chunk = bin.substr(i, 4);
+        int start = max(0, i - 4);
+        int chunk_len = i - start;
+        string chunk = bin.substr(start, chunk_len);
 
-        // Fill with zeros if less than 4 bits
+        // Pad with zeros on the LEFT if less than 4 bits
         while (chunk.length() < 4)
         {
-            chunk += "0";
+            chunk = "0" + chunk;
         }
 
-        // Look up the hex stringacter for this 4-bit chunk
+        // Look up the hex string for this 4-bit chunk
         string hex_string = bst->get(chunk);
-        result = hex_string + result;
+        result = hex_string + result; // Prepend to maintain order
     }
 
     return result;
