@@ -10,6 +10,7 @@
 #include <math.h>
 #include "usecase.cpp"
 #include "bst.h"
+#include <chrono>
 
 using namespace std;
 
@@ -387,6 +388,63 @@ void test_binhex()
     }
 }
 
+void time_test()
+{
+    BST<string, int> bst;
+    // Insert many elements
+    int vals[8] = {6,1,2,7,2,8,9,10};
+    for (int i = 0; i < 8; i++)
+    {
+        bst.insert("data", i);
+    }
+    BST<string, int> bst1;
+    // Insert many elements
+    int vals2[12] = {5,1,3,7,1,8,2,10,1,2,142,12};
+    for (int i = 0; i < 12; i++)
+    {
+        bst1.insert("data", i);
+    }
+    int total = 0;
+
+    int val = rand() % 100;
+    auto begin = std::chrono::high_resolution_clock::now();
+    bst.insert("data", val);
+    auto end = std::chrono::high_resolution_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    cout << "insert time test took " << elapsed.count() << " nanoseconds" << endl;
+    total += elapsed.count();
+
+    begin = std::chrono::high_resolution_clock::now();
+    bst.get(val);
+    end = std::chrono::high_resolution_clock::now();
+    elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    cout << "get time test took " << elapsed.count() << " nanoseconds" << endl;
+    total += elapsed.count();
+
+    begin = std::chrono::high_resolution_clock::now();
+    bst.successor(val);
+    end = std::chrono::high_resolution_clock::now();
+    elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    cout << "successor time test took " << elapsed.count() << " nanoseconds" << endl;
+    total += elapsed.count();
+
+    begin = std::chrono::high_resolution_clock::now();
+    bst.remove(val);
+    end = std::chrono::high_resolution_clock::now();
+    elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    cout << "remove time test took " << elapsed.count() << " nanoseconds" << endl;
+    total += elapsed.count();
+
+    begin = std::chrono::high_resolution_clock::now();
+    bst.trim(3,9);
+    end = std::chrono::high_resolution_clock::now();
+    elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    cout << "trim time test took " << elapsed.count() << " nanoseconds" << endl;
+    total += elapsed.count();
+
+    cout << "Total time: " << total << endl;
+}
+
 int main()
 {
 
@@ -394,6 +452,8 @@ int main()
     cout << endl
          << "Running tests for " << file_name << endl
          << endl;
+
+    time_test();
 
     test_empty();
     test_insert();
