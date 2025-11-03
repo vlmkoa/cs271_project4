@@ -283,6 +283,8 @@ Key BST<Data, Key>::successor(const Key &k)
         cur = suc;
         suc = suc->p;
     }
+    if (!suc)
+        return Key{};
     return suc->key;
 }
 
