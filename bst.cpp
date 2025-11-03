@@ -33,6 +33,7 @@ bool BST<Data, Key>::empty()
  *   the left or right child of its parent.
  *
  *   Precondition: Key k is not used in the tree.
+ *
  *   Postcondition: Node with Data d and Key k is inserted
  *   to its correct position in the tree.
  *=======================================================*/
@@ -71,6 +72,7 @@ void BST<Data, Key>::insert(const Data &d, const Key &k)
  *   Data.
  *
  *   Precondition: None
+ *
  *   Postcondition: Data d of Node with provided key
  *   returned if key is valid. If not then return Data's
  *   default value.
@@ -102,6 +104,7 @@ Data BST<Data, Key>::get(const Key &k)
  *   Precondition: Node* u is a valid element in the
  *   tree. If v not null, subtree rooted at v do not
  *   violate BST properties when in u's position.
+ *
  *   Postcondition: v in u's position. BST properties
  *   maintained.
  *=======================================================*/
@@ -163,11 +166,13 @@ void BST<Data, Key>::move_to_successor(Node *&cur)
 }
 
 /**=====================================================
- *   remove(k): this function remove Node with Key k
+ *   remove(k): this function removes Node with Key k
  *   from the tree.
  *
- *   Precondition: k must be a valid key in the tree
- *   Postcondition: Node with key k is removed
+ *   Precondition: None
+ *
+ *   Postcondition: Node with key k is removed if k is
+ *   a valid key, if not then no node removed.
  *=======================================================*/
 template <class Data, class Key>
 void BST<Data, Key>::remove(const Key &k)
@@ -286,6 +291,11 @@ void BST<Data, Key>::in_order_helper(Node *curr, stringstream &ss, bool &first)
     in_order_helper(curr->right, ss, first);
 }
 
+template <class Data, class Key>
+void BST<Data, Key>::trim(const Key &low, const Key &high)
+{
+}
+
 /**=====================================================
  *   to_string(): this function returns the string
  *   of keys in the tree. Each node in i-th layer is added
@@ -293,6 +303,7 @@ void BST<Data, Key>::in_order_helper(Node *curr, stringstream &ss, bool &first)
  *   from left to right order.
  *
  *   Precondition: None
+ *
  *   Postcondition: A string of keys in left-right,
  *   top down order
  *=======================================================*/
