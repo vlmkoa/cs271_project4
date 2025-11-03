@@ -264,8 +264,20 @@ Key BST<Data, Key>::min_key()
 template <class Data, class Key>
 Key BST<Data, Key>::successor(const Key &k)
 {
-    // move_to_key(cur, k);
-    // move_to_successor(cur);
+    Node *cur = root;
+    move_to_key(cur, k);
+    if (cur != nullptr) {
+        if (cur->right) {
+            return cur->right.min_key();
+        }
+        Node *pcur = cur->p;
+        while ((pcur) && (cur == pcur->right)) {
+            cur = pcur;
+            pcur = pcur->p;
+        }
+        return pcur;
+    }
+    return cur;
 }
 
 template <class Data, class Key>
@@ -294,6 +306,14 @@ void BST<Data, Key>::in_order_helper(Node *curr, stringstream &ss, bool &first)
 template <class Data, class Key>
 void BST<Data, Key>::trim(const Key &low, const Key &high)
 {
+    Node *cur = root;
+    move_to_min(cur);
+    while (cur) {
+        if ((cur->key <= low) || (cur->key >= high)) {
+            delete(cur);
+        }
+        cur = successor(cur->key);
+    }
 }
 
 /**=====================================================
