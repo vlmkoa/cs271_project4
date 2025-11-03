@@ -324,50 +324,54 @@ void BST<Data, Key>::clear_subtree(Node *n)
 template <class Data, class Key>
 void BST<Data, Key>::trim(const Key &low, const Key &high)
 {
-    trim_helper(root, low, high);
-
-    // Node *cur = root;
-    // move_to_min(cur);
-    // while (cur) {
-    //     if ((cur->key <= low) || (cur->key >= high)) {
-    //         delete(cur);
-    //     }
-    //     cur = successor(cur->key);
-    // }
+    root = trim_helper(root, low, high, nullptr);
 }
 
 template <class Data, class Key>
-void BST<Data, Key>::trim_helper(Node *n, const Key &low, const Key &high)
+typename BST<Data, Key>::Node *BST<Data, Key>::trim_helper(Node *n, const Key &low, const Key &high, Node *parent)
 {
     if (!n)
-        return;
+        return nullptr;
 
+    // Trim children first (post-order)
+    n->left = trim_helper(n->left, low, high, n);
+    n->right = trim_helper(n->right, low, high, n);
+
+    // Now decide about n
     if (n->key < low)
     {
-        // drop left, promote right
-        clear_subtree(n->left);
+        Node *r = n->right; // nodes to keep from this subtree
+        // unlink and delete current node
         n->left = nullptr;
-        Node *r = n->right;
         n->right = nullptr;
-        transplant(n, r);
+        n->p = nullptr;
         delete n;
         if (r)
-            trim_helper(r, low, high);
-        return;
+            r->p = parent;
+        return r;
     }
 
     if (n->key > high)
     {
-        clear_subtree(n->right);
-        n->right = nullptr;
         Node *l = n->left;
         n->left = nullptr;
-        transplant(n, l);
+        n->right = nullptr;
+        n->p = nullptr;
         delete n;
         if (l)
-            trim_helper(l, low, high);
-        return;
+            l->p = parent;
+        return l;
     }
+
+    // n is within [low, high] — keep it
+    n->p = parent;
+    return n;
+}
+
+template <class Data, class Key>
+void BST<Data, Key>::trim(const Key &low, const Key &high)
+{
+    root = trim_helper(root, low, high, nullptr);
 }
 
 /**=====================================================
