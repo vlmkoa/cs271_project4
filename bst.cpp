@@ -66,11 +66,14 @@ void BST<Data, Key>::insert(const Data &d, const Key &k)
 
 /**=====================================================
  *   get(k): this function returns the Data d of the Node
- *   with provided key.
+ *   with provided key if key is valid. If key doesn't
+ *   exist in the tree, then return default value of type
+ *   Data.
  *
- *   Precondition: Key k exists in the tree
+ *   Precondition: None
  *   Postcondition: Data d of Node with provided key
- *   returned.
+ *   returned if key is valid. If not then return Data's
+ *   default value.
  *=======================================================*/
 template <class Data, class Key>
 Data BST<Data, Key>::get(const Key &k)
