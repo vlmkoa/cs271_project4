@@ -54,7 +54,7 @@ void BST<Data, Key>::insert(const Data &d, const Key &k)
             cur = cur->right;
         }
     }
-    // if p is null, then cur is null, then root need to be initialized
+    // if p is null, then cur is null, so root needs to be initialized
     if (!p)
     {
         root = new Node(d, k);
