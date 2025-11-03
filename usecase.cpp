@@ -54,7 +54,7 @@ string convert(BST<string, string> *bst, string bin)
 
         // Look up the hex stringacter for this 4-bit chunk
         string hex_string = bst->get(chunk);
-        result += hex_string;
+        result = hex_string + result;
     }
 
     return result;
