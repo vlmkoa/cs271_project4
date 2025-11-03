@@ -368,12 +368,6 @@ typename BST<Data, Key>::Node *BST<Data, Key>::trim_helper(Node *n, const Key &l
     return n;
 }
 
-template <class Data, class Key>
-void BST<Data, Key>::trim(const Key &low, const Key &high)
-{
-    root = trim_helper(root, low, high, nullptr);
-}
-
 /**=====================================================
  *   to_string(): this function returns the string
  *   of keys in the tree. Each node in i-th layer is added

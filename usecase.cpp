@@ -4,12 +4,12 @@
 
 using namespace std;
 
-BST<char, string> *create_bst(string fname);
-string convert(BST<char, string> *bst, string bin);
+BST<string, string> *create_bst(string fname);
+string convert(BST<string, string> *bst, string bin);
 
-BST<char, string> *create_bst(string fname)
+BST<string, string> *create_bst(string fname)
 {
-    BST<char, string> *bst = new BST<char, string>();
+    BST<string, string> *bst = new BST<string, string>();
     ifstream file(fname);
 
     if (!file.is_open())
@@ -23,13 +23,13 @@ BST<char, string> *create_bst(string fname)
         if (line.empty())
             continue;
 
-        // Parse the line: "hexChar,binaryString"
+        // Parse the line: "hexstring,binaryString"
         size_t comma_pos = line.find(',');
         if (comma_pos != string::npos)
         {
-            char hex_char = line[0];
+            string hex_string = line.substr(0, comma_pos);
             string binary = line.substr(comma_pos + 1);
-            bst->insert(hex_char, binary);
+            bst->insert(hex_string, binary);
         }
     }
 
@@ -37,7 +37,7 @@ BST<char, string> *create_bst(string fname)
     return bst;
 }
 
-string convert(BST<char, string> *bst, string bin)
+string convert(BST<string, string> *bst, string bin)
 {
     string result = "";
 
@@ -52,9 +52,9 @@ string convert(BST<char, string> *bst, string bin)
             chunk += "0";
         }
 
-        // Look up the hex character for this 4-bit chunk
-        char hex_char = bst->get(chunk);
-        result += hex_char;
+        // Look up the hex stringacter for this 4-bit chunk
+        string hex_string = bst->get(chunk);
+        result += hex_string;
     }
 
     return result;

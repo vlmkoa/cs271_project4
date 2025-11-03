@@ -302,17 +302,17 @@ void test_trim()
     {
         cerr << "Error in trimming the bst : " << e.what() << endl;
     }
-}
+};
 
 void test_binhex()
 {
     try
     {
-        BST<string, string> *bst1 = create_bst<string, string>("binhex.txt");
+        BST<string, string> *bst1 = create_bst("binhex.txt");
         string bin1 = "111010100101";
         string expected_hex1 = "EA5";
 
-        string hex1 = convert<string, string>(bst1, bin1);
+        string hex1 = convert(bst1, bin1);
         delete bst1;
 
         if (hex1 != expected_hex1)
@@ -327,11 +327,11 @@ void test_binhex()
 
     try
     {
-        BST<string, string> *bst2 = create_bst<string, string>("binhex.txt");
+        BST<string, string> *bst2 = create_bst("binhex.txt");
         string bin2 = "110101";
         string expected_hex2 = "35";
 
-        string hex2 = convert<string, string>(bst2, bin2);
+        string hex2 = convert(bst2, bin2);
         delete bst2;
 
         if (hex2 != expected_hex2)
