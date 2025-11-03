@@ -4,7 +4,7 @@ test: test_bst.o
 	g++ -o test test_bst.o
 	./test
 
-test_minqueue.o: test_bst.cpp bst.h bst.cpp
+test_bst.o: test_bst.cpp bst.h bst.cpp
 	g++ -c test_bst.cpp
 
 usecase: main.o bst.o
@@ -14,7 +14,7 @@ usecase: main.o bst.o
 usecase.o: main.cpp bst.h
 	g++ -std=c++17 -c main.cpp
 
-minqueue.o: bst.cpp bst.h
+bst.o: bst.cpp bst.h
 	g++ -c bst.cpp
 
 clean:
