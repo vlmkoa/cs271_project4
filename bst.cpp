@@ -292,8 +292,53 @@ void BST<Data, Key>::in_order_helper(Node *curr, stringstream &ss, bool &first)
 }
 
 template <class Data, class Key>
+void BST<Data, Key>::clear_subtree(Node *n)
+{
+    if (!n)
+        return;
+    clear_subtree(n->left);
+    clear_subtree(n->right);
+    delete n;
+}
+
+template <class Data, class Key>
 void BST<Data, Key>::trim(const Key &low, const Key &high)
 {
+    trim_helper(root, low, high);
+}
+
+template <class Data, class Key>
+void BST<Data, Key>::trim_helper(Node *n, const Key &low, const Key &high)
+{
+    if (!n)
+        return;
+
+    if (n->key < low)
+    {
+        // drop left, promote right
+        clear_subtree(n->left);
+        n->left = nullptr;
+        Node *r = n->right;
+        n->right = nullptr;
+        transplant(n, r);
+        delete n;
+        if (r)
+            trim_helper(r, low, high);
+        return;
+    }
+
+    if (n->key > high)
+    {
+        clear_subtree(n->right);
+        n->right = nullptr;
+        Node *l = n->left;
+        n->left = nullptr;
+        transplant(n, l);
+        delete n;
+        if (l)
+            trim_helper(l, low, high);
+        return;
+    }
 }
 
 /**=====================================================
