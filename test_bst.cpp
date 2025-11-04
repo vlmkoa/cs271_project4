@@ -42,7 +42,7 @@ void test_empty()
         string bst_str = bst.to_string();
         if (!bst.empty())
         {
-            cout << "Incorrect empty result when all items were removed from bst. Result: " << bst_str << " end result." << endl;
+            cout << "Incorrect empty result when all items were removed from bst. Result: " << bst_str << endl;
         }
     }
     catch (exception &e)
@@ -96,7 +96,7 @@ void test_insert()
         {
             cout << "Incorrect result of inserting keys {5, 2, 7, 1, 3, 4, 6, 9, 8, 10}. Expected 5 2 7 1 3 6 9 4 8 10 but got : " << bst_str << endl;
         }
-
+        
         // insert balanced keys again
         for (int i = 0; i < 10; i++)
         {
@@ -163,11 +163,69 @@ void test_get()
         {
             cout << "Incorrect get result from empty bst. Expected 0 but got " << val << endl;
         }
-        bst.insert("one", 1);
-        val = bst.get(1);
-        if (val != "one")
+        //get root
+        bst.insert("five", 5);
+        val = bst.get(5);
+        if (val != "five")
         {
-            cout << "Incorrect get result. Expected \"one\" but got : " << val << endl;
+            cout << "Incorrect get result. Expected \"five\" but got : " << val << endl;
+        }
+        //get right leaf
+        bst.insert("seven", 7);
+        val = bst.get(7);
+        if (val != "seven")
+        {
+            cout << "Incorrect get result. Expected \"seven\" but got : " << val << endl;
+        }
+        //get left leaf
+        bst.insert("three", 3);
+        val = bst.get(3);
+        if (val != "three")
+        {
+            cout << "Incorrect get result. Expected \"three\" but got : " << val << endl;
+        }
+        //get middle leaf
+        bst.insert("one", 1);
+        bst.insert("two", 2);
+        val = bst.get(3);
+        if (val != "three")
+        {
+            cout << "Incorrect get result. Expected \"three\" but got : " << val << endl;
+        }
+        //get val not in tree
+        val = bst.get(8);
+        if (val != "")
+        {
+            cout << "Incorrect get result. Expected empty string but got : " << val << endl;
+        }
+        //get removed val
+        bst.remove(3);
+        val = bst.get(3);
+        if (val != "")
+        {
+            cout << "Incorrect get result. Expected empty string but got : " << val << endl;
+        }
+
+        //different types
+        BST<int, char> char_bst;
+        int cval = char_bst.get('a');
+        if (cval != 0)
+        {
+            cout << "Incorrect get result from empty bst. Expected 0 but got " << cval << endl;
+        }
+        //get root
+        char_bst.insert(1, 'a');
+        cval = char_bst.get('a');
+        if (cval != 1)
+        {
+            cout << "Incorrect get result. Expected 1 but got : " << cval << endl;
+        }
+        //get right leaf
+        char_bst.insert(2, 'b');
+        cval = char_bst.get('b');
+        if (cval != 2)
+        {
+            cout << "Incorrect get result. Expected 2 but got : " << cval << endl;
         }
     }
     catch (exception &e)
@@ -182,15 +240,130 @@ void test_remove()
     {
         int vals[10] = {5, 2, 7, 1, 3, 4, 6, 9, 8, 10};
         BST<string, int> balanced_bst;
+
+        //test empty
+        balanced_bst.remove(7);
+        string bst_str = balanced_bst.to_string();
+        if (bst_str != "")
+        {
+            cout << "Incorrect result of removing key from empty tree. Expected empty but got : " << bst_str << endl;
+        }
+
+        //test nonempty
         for (int i = 0; i < 10; i++)
         {
             balanced_bst.insert("some data", vals[i]);
         }
         balanced_bst.remove(7);
-        string bst_str = balanced_bst.to_string();
+        bst_str = balanced_bst.to_string();
         if (bst_str != "5 2 8 1 3 6 9 4 10")
         {
             cout << "Incorrect result of removing 7. Expected 5 2 8 1 3 6 9 4 10 but got : " << bst_str << endl;
+        }
+        //remove leaf
+        balanced_bst.remove(4);
+        bst_str = balanced_bst.to_string();
+        if (bst_str != "5 2 8 1 3 6 9 10")
+        {
+            cout << "Incorrect result of removing 4. Expected 5 2 8 1 3 6 9 10 but got : " << bst_str << endl;
+        }
+        //remove root
+        balanced_bst.remove(5);
+        bst_str = balanced_bst.to_string();
+        if (bst_str != "6 2 8 1 3 9 10")
+        {
+            cout << "Incorrect result of removing 5. Expected 6 2 8 1 3 9 10 but got : " << bst_str << endl;
+        }
+        //no left sub tree for removed key
+        balanced_bst.remove(8);
+        bst_str = balanced_bst.to_string();
+        if (bst_str != "6 2 9 1 3 10")
+        {
+            cout << "Incorrect result of removing 8. Expected 6 2 9 1 3 10 but got : " << bst_str << endl;
+        }
+        //no right sub tree for removed key
+        balanced_bst.remove(3);
+        balanced_bst.remove(2);
+        bst_str = balanced_bst.to_string();
+        if (bst_str != "6 1 9 10")
+        {
+            cout << "Incorrect result of removing 2 and 3. Expected 6 1 9 10 but got : " << bst_str << endl;
+        }
+        //remove rest
+        balanced_bst.remove(6);
+        balanced_bst.remove(9);
+        balanced_bst.remove(1);
+        balanced_bst.remove(10);
+        bst_str = balanced_bst.to_string();
+        if (bst_str != "")
+        {
+            cout << "Incorrect result of removing all values. Expected empty but got : " << bst_str << endl;
+        }
+
+        //remove when duplicate keys
+        for (int i = 0; i < 20; i++)
+        {
+            balanced_bst.insert("some data", vals[i%10]);
+        }
+        //remove root
+        balanced_bst.remove(5);
+        bst_str = balanced_bst.to_string();
+        if (bst_str != "5 2 7 1 3 6 9 1 2 4 6 8 10 3 4 7 8 9 10")
+        {
+            cout << "Incorrect result of removing 5 once. Expected 5 2 7 1 3 6 9 1 2 4 6 8 10 3 4 7 8 9 10 but got : " << bst_str << endl;
+        }
+        balanced_bst.remove(5);
+        bst_str = balanced_bst.to_string();
+        if (bst_str != "6 2 7 1 3 6 9 1 2 4 8 10 3 4 7 8 9 10")
+        {
+            cout << "Incorrect result of removing 5 twice. Expected 6 2 7 1 3 6 9 1 2 4 8 10 3 4 7 8 9 10 but got : " << bst_str << endl;
+        }
+        //remove when successor is not leaf
+        balanced_bst.insert("some data", 11);
+        balanced_bst.insert("some data", 7);
+        balanced_bst.remove(10);
+        balanced_bst.remove(7);
+        bst_str = balanced_bst.to_string();
+        if (bst_str != "6 2 7 1 3 6 9 1 2 4 8 10 3 4 7 8 9 11")
+        {
+            cout << "Incorrect result of inserting and then removing 11 and 7. Expected 6 2 7 1 3 6 9 1 2 4 8 10 3 4 7 8 9 11 but got : " << bst_str << endl;
+        }
+
+        //remove when key is not in tree
+        balanced_bst.remove(12);
+        bst_str = balanced_bst.to_string();
+        if (bst_str != "6 2 7 1 3 6 9 1 2 4 8 10 3 4 7 8 9 11")
+        {
+            cout << "Incorrect result of removing 12. Expected 6 2 7 1 3 6 9 1 2 4 8 10 3 4 7 8 9 11 but got : " << bst_str << endl;
+        }
+
+        //different types
+        BST<int, int> int_bst;
+
+        //test nonempty
+        for (int i = 0; i < 10; i++)
+        {
+            int_bst.insert(i, vals[i]);
+        }
+        int_bst.remove(7);
+        string int_str = int_bst.to_string();
+        if (int_str != "5 2 8 1 3 6 9 4 10")
+        {
+            cout << "Incorrect result of removing 7. Expected 5 2 8 1 3 6 9 4 10 but got : " << int_str << endl;
+        }
+        //remove leaf
+        int_bst.remove(4);
+        int_str = int_bst.to_string();
+        if (int_str != "5 2 8 1 3 6 9 10")
+        {
+            cout << "Incorrect result of removing 4. Expected 5 2 8 1 3 6 9 10 but got : " << int_str << endl;
+        }
+        //remove root
+        int_bst.remove(5);
+        int_str = int_bst.to_string();
+        if (int_str != "6 2 8 1 3 9 10")
+        {
+            cout << "Incorrect result of removing 5. Expected 6 2 8 1 3 9 10 but got : " << int_str << endl;
         }
     }
     catch (exception &e)
@@ -205,14 +378,66 @@ void test_max_data()
     {
         int vals[10] = {5, 2, 7, 1, 3, 4, 6, 9, 8, 10};
         BST<string, int> balanced_bst;
+
+        // empty bst
+        string max_str = balanced_bst.max_data();
+        if (max_str != "")
+        {
+            cout << "Incorrect result of max_data. Expected empty but got : " << max_str << endl;
+        }
+
         for (int i = 0; i < 10; i++)
         {
             balanced_bst.insert(to_string(vals[i]) + " data", vals[i]);
         }
-        string max_str = balanced_bst.max_data();
+
+        // max is leaf
+        max_str = balanced_bst.max_data();
         if (max_str != "10 data")
         {
             cout << "Incorrect result of max_data. Expected \"10 data\" but got : " << max_str << endl;
+        }
+        // max has left child
+        balanced_bst.remove(10);
+        max_str = balanced_bst.max_data();
+        if (max_str != "9 data")
+        {
+            cout << "Incorrect result of max_data. Expected \"9 data\" but got : " << max_str << endl;
+        }
+        // two maxes
+        balanced_bst.remove(8);
+        balanced_bst.remove(9);
+        balanced_bst.insert("7 data", 7);
+        max_str = balanced_bst.max_data();
+        if (max_str != "7 data")
+        {
+            cout << "Incorrect result of max_data. Expected \"7 data\" but got : " << max_str << endl;
+        }
+        // max is root
+        balanced_bst.remove(6);
+        balanced_bst.remove(7);
+        balanced_bst.remove(7);
+        max_str = balanced_bst.max_data();
+        if (max_str != "5 data")
+        {
+            cout << "Incorrect result of max_data. Expected \"5 data\" but got : " << max_str << endl;
+        }
+        // max is alone
+        balanced_bst.remove(1);
+        balanced_bst.remove(2);
+        balanced_bst.remove(3);
+        balanced_bst.remove(4);
+        max_str = balanced_bst.max_data();
+        if (max_str != "5 data")
+        {
+            cout << "Incorrect result of max_data. Expected \"5 data\" but got : " << max_str << endl;
+        }
+        // all removed
+        balanced_bst.remove(5);
+        max_str = balanced_bst.max_data();
+        if (max_str != "")
+        {
+            cout << "Incorrect result of max_data. Expected empty but got : " << max_str << endl;
         }
     }
     catch (exception &e)
@@ -227,14 +452,66 @@ void test_max_key()
     {
         int vals[10] = {5, 2, 7, 1, 3, 4, 6, 9, 8, 10};
         BST<string, int> balanced_bst;
+
+        // empty bst
+        int max_k = balanced_bst.max_key();
+        if (max_k)
+        {
+            cout << "Incorrect result of max_key. Expected empty but got : " << max_k << endl;
+        }
+
         for (int i = 0; i < 10; i++)
         {
             balanced_bst.insert(to_string(vals[i]) + " data", vals[i]);
         }
-        int max_k = balanced_bst.max_key();
+
+        // max is leaf
+        max_k = balanced_bst.max_key();
         if (max_k != 10)
         {
             cout << "Incorrect result of max_key. Expected 10 but got : " << max_k << endl;
+        }
+        // max has left child
+        balanced_bst.remove(10);
+        max_k = balanced_bst.max_key();
+        if (max_k != 9)
+        {
+            cout << "Incorrect result of max_key. Expected 9 but got : " << max_k << endl;
+        }
+        // two maxes
+        balanced_bst.remove(8);
+        balanced_bst.remove(9);
+        balanced_bst.insert("7 data", 7);
+        max_k = balanced_bst.max_key();
+        if (max_k != 7)
+        {
+            cout << "Incorrect result of max_key. Expected 7 but got : " << max_k << endl;
+        }
+        // max is root
+        balanced_bst.remove(6);
+        balanced_bst.remove(7);
+        balanced_bst.remove(7);
+        max_k = balanced_bst.max_key();
+        if (max_k != 5)
+        {
+            cout << "Incorrect result of max_key. Expected 5 but got : " << max_k << endl;
+        }
+        // max is alone
+        balanced_bst.remove(1);
+        balanced_bst.remove(2);
+        balanced_bst.remove(3);
+        balanced_bst.remove(4);
+        max_k = balanced_bst.max_key();
+        if (max_k != 5)
+        {
+            cout << "Incorrect result of max_key. Expected 5 but got : " << max_k << endl;
+        }
+        // all removed
+        balanced_bst.remove(5);
+        max_k = balanced_bst.max_key();
+        if (max_k)
+        {
+            cout << "Incorrect result of max_key. Expected empty but got : " << max_k << endl;
         }
     }
     catch (exception &e)
@@ -249,14 +526,66 @@ void test_min_data()
     {
         int vals[10] = {5, 2, 7, 1, 3, 4, 6, 9, 8, 10};
         BST<string, int> balanced_bst;
+
+        // empty bst
+        string min_str = balanced_bst.min_data();
+        if (min_str != "")
+        {
+            cout << "Incorrect result of max_data. Expected empty but got : " << min_str << endl;
+        }
+
         for (int i = 0; i < 10; i++)
         {
             balanced_bst.insert(to_string(vals[i]) + " data", vals[i]);
         }
-        string min_str = balanced_bst.min_data();
+
+        // min is leaf
+        min_str = balanced_bst.min_data();
         if (min_str != "1 data")
         {
             cout << "Incorrect result of min_data. Expected \"1 data\" but got : " << min_str << endl;
+        }
+        // min has right child
+        balanced_bst.remove(1);
+        min_str = balanced_bst.min_data();
+        if (min_str != "2 data")
+        {
+            cout << "Incorrect result of min_data. Expected \"2 data\" but got : " << min_str << endl;
+        }
+        // two mins
+        balanced_bst.insert("2 data", 2);
+        min_str = balanced_bst.min_data();
+        if (min_str != "2 data")
+        {
+            cout << "Incorrect result of min_data. Expected \"2 data\" but got : " << min_str << endl;
+        }
+        // min is root
+        balanced_bst.remove(3);
+        balanced_bst.remove(4);
+        balanced_bst.remove(2);
+        balanced_bst.remove(2);
+        min_str = balanced_bst.min_data();
+        if (min_str != "5 data")
+        {
+            cout << "Incorrect result of min_data. Expected \"5 data\" but got : " << min_str << endl;
+        }
+        // min is alone
+        balanced_bst.remove(7);
+        balanced_bst.remove(6);
+        balanced_bst.remove(9);
+        balanced_bst.remove(8);
+        balanced_bst.remove(10);
+        min_str = balanced_bst.min_data();
+        if (min_str != "5 data")
+        {
+            cout << "Incorrect result of min_data. Expected \"5 data\" but got : " << min_str << endl;
+        }
+        // all removed
+        balanced_bst.remove(5);
+        min_str = balanced_bst.min_data();
+        if (min_str != "")
+        {
+            cout << "Incorrect result of max_data. Expected empty but got : " << min_str << endl;
         }
     }
     catch (exception &e)
@@ -271,14 +600,66 @@ void test_min_key()
     {
         int vals[10] = {5, 2, 7, 1, 3, 4, 6, 9, 8, 10};
         BST<string, int> balanced_bst;
+
+        // empty bst
+        int min_k = balanced_bst.min_key();
+        if (min_k)
+        {
+            cout << "Incorrect result of min_key. Expected empty but got : " << min_k << endl;
+        }
+
         for (int i = 0; i < 10; i++)
         {
             balanced_bst.insert(to_string(vals[i]) + " data", vals[i]);
         }
-        int min_k = balanced_bst.min_key();
+
+        // min is leaf
+        min_k = balanced_bst.min_key();
         if (min_k != 1)
         {
-            cout << "Incorrect result of min_key. Expected 10 but got : " << min_k << endl;
+            cout << "Incorrect result of min_key. Expected 1 but got : " << min_k << endl;
+        }
+        // min has right child
+        balanced_bst.remove(1);
+        min_k = balanced_bst.min_key();
+        if (min_k != 2)
+        {
+            cout << "Incorrect result of min_key. Expected 2 but got : " << min_k << endl;
+        }
+        // two mins
+        balanced_bst.insert("2 data", 2);
+        min_k = balanced_bst.min_key();
+        if (min_k != 2)
+        {
+            cout << "Incorrect result of max_key. Expected 2 but got : " << min_k << endl;
+        }
+        // min is root
+        balanced_bst.remove(2);
+        balanced_bst.remove(2);
+        balanced_bst.remove(3);
+        balanced_bst.remove(4);
+        min_k = balanced_bst.min_key();
+        if (min_k != 5)
+        {
+            cout << "Incorrect result of min_key. Expected 5 but got : " << min_k << endl;
+        }
+        // min is alone
+        balanced_bst.remove(10);
+        balanced_bst.remove(8);
+        balanced_bst.remove(9);
+        balanced_bst.remove(6);
+        balanced_bst.remove(7);
+        min_k = balanced_bst.min_key();
+        if (min_k != 5)
+        {
+            cout << "Incorrect result of min_key. Expected 5 but got : " << min_k << endl;
+        }
+        // all removed
+        balanced_bst.remove(5);
+        min_k = balanced_bst.min_key();
+        if (min_k)
+        {
+            cout << "Incorrect result of min_key. Expected empty but got : " << min_k << endl;
         }
     }
     catch (exception &e)
@@ -293,21 +674,94 @@ void test_successor()
     {
         int vals[10] = {5, 2, 7, 1, 3, 4, 6, 9, 8, 10};
         BST<string, int> balanced_bst;
+        // empty tree
+        int succ = balanced_bst.successor(4);
+        if (succ != 0)
+        {
+            cout << "Incorrect result of successor of a key in an empty tree. Expected 0 but got : " << succ << endl;
+        }
+
         for (int i = 0; i < 10; i++)
         {
             balanced_bst.insert(to_string(vals[i]) + " data", vals[i]);
         }
-        int succ = balanced_bst.successor(4);
+        // successor is root
+        succ = balanced_bst.successor(4);
         if (succ != 5)
         {
             cout << "Incorrect result of successor of 4. Expected 5 but got : " << succ << endl;
         }
+        // successor is in right child subtree
         succ = balanced_bst.successor(7);
         if (succ != 8)
         {
             cout << "Incorrect result of successor of 7. Expected 8 but got : " << succ << endl;
         }
+        // no successor
         succ = balanced_bst.successor(10);
+        if (succ != 0)
+        {
+            cout << "Incorrect result of successor of 10. Expected 0 but got : " << succ << endl;
+        }
+        // successor is in ancestors and is not root
+        succ = balanced_bst.successor(1);
+        if (succ != 2)
+        {
+            cout << "Incorrect result of successor of 1. Expected 2 but got : " << succ << endl;
+        }
+        // key is not in tree
+        succ = balanced_bst.successor(11);
+        if (succ != 0)
+        {
+            cout << "Incorrect result of successor of 11. Expected 0 but got : " << succ << endl;
+        }
+
+        // right unbalanced
+        int order[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        BST<string, int> right_bst;
+        for (int i = 0; i < 10; i++)
+        {
+            right_bst.insert(to_string(order[i]) + " data", order[i]);
+        }
+        // root
+        succ = right_bst.successor(1);
+        if (succ != 2)
+        {
+            cout << "Incorrect result of successor of 1. Expected 2 but got : " << succ << endl;
+        }
+        // middle
+        succ = right_bst.successor(5);
+        if (succ != 6)
+        {
+            cout << "Incorrect result of successor of 5. Expected 6 but got : " << succ << endl;
+        }
+        // leaf
+        succ = right_bst.successor(10);
+        if (succ != 0)
+        {
+            cout << "Incorrect result of successor of 10. Expected 0 but got : " << succ << endl;
+        }
+
+        // left unbalanced
+        BST<string, int> left_bst;
+        for (int i = 9; i >= 0; i--)
+        {
+            left_bst.insert(to_string(order[i]) + " data", order[i]);
+        }
+        // leaf
+        succ = left_bst.successor(1);
+        if (succ != 2)
+        {
+            cout << "Incorrect result of successor of 1. Expected 2 but got : " << succ << " and " << left_bst.to_string() << endl;
+        }
+        // middle
+        succ = left_bst.successor(5);
+        if (succ != 6)
+        {
+            cout << "Incorrect result of successor of 5. Expected 6 but got : " << succ << endl;
+        }
+        // root
+        succ = left_bst.successor(10);
         if (succ != 0)
         {
             cout << "Incorrect result of successor of 10. Expected 0 but got : " << succ << endl;
@@ -323,16 +777,38 @@ void test_in_order()
 {
     try
     {
+        // bst is empty
         BST<string, int> bst;
+        string bst_str = bst.in_order();
+        if (bst_str != "")
+        {
+            cout << "Incorrect in_order result for empty bst. Got : " << bst_str << endl;
+        }
+
+        // insert keys in order
         for (int i = 1; i <= 10; i++)
         {
             bst.insert("some data", i);
         }
-        string bst_str = bst.in_order();
+        bst_str = bst.in_order();
         if (bst_str != "1 2 3 4 5 6 7 8 9 10")
         {
             cout << "Incorrect in_order result after inserting keys 1-10 in order. Expected 1 2 3 4 5 6 7 8 9 10 but got : " << bst_str << endl;
         }
+
+        // insert keys in reverse order
+        BST<string, int> rbst;
+        for (int i = 10; i >= 1; i--)
+        {
+            rbst.insert("some data", i);
+        }
+        bst_str = rbst.in_order();
+        if (bst_str != "1 2 3 4 5 6 7 8 9 10")
+        {
+            cout << "Incorrect in_order result after inserting keys 1-10 in reverse order. Expected 1 2 3 4 5 6 7 8 9 10 but got : " << bst_str << endl;
+        }
+
+        // insert balanced keys
         int vals[10] = {5, 2, 7, 1, 3, 4, 6, 9, 8, 10};
         BST<string, int> balanced_bst;
         for (int i = 0; i < 10; i++)
@@ -355,18 +831,28 @@ void test_trim()
 {
     try
     {
+        // trimming empty tree
         BST<string, int> bst;
+        bst.trim(1, 2);
+        string bst_str = bst.to_string();
+        if (bst_str != "")
+        {
+            cout << "Incorrect tree after trimming empty bst with low=1, high=2. Expected empty but got : " << bst_str << endl;
+        }
+
+        // trimming non-empty tree
         int vals[3] = {1, 0, 2};
         for (int i = 0; i < 3; i++)
         {
             bst.insert(to_string(vals[i]) + " data", vals[i]);
         }
         bst.trim(1, 2);
-        string bst_str = bst.to_string();
+        bst_str = bst.to_string();
         if (bst_str != "1 2")
         {
             cout << "Incorrect tree after trimming 1 0 2 with low=1, high=2. Expected 1 2 but got : " << bst_str << endl;
         }
+        // trimming more complex tree
         BST<string, int> bst2;
         int vals2[5] = {3, 0, 4, 2, 1};
         for (int i = 0; i < 5; i++)
@@ -378,6 +864,37 @@ void test_trim()
         if (bst_str != "3 2 1")
         {
             cout << "Incorrect tree after trimming 3 0 4 2 1 with low=1, high=3. Expected 3 2 1 but got : " << bst_str << endl;
+        }
+        // trimming same bounds and tree twice
+        bst2.trim(1, 3);
+        bst_str = bst2.to_string();
+        if (bst_str != "3 2 1")
+        {
+            cout << "Incorrect tree after trimming 3 0 4 2 1 twice with low=1, high=3. Expected 3 2 1 but got : " << bst_str << endl;
+        }
+
+        // trimming out of bounds
+        bst2.trim(4, 5);
+        bst_str = bst2.to_string();
+        if (bst_str != "")
+        {
+            cout << "Incorrect tree after trimming 3 2 1 with low=4, high=5. Expected empty but got : " << bst_str << endl;
+        }
+        // trimming partially out of bounds, trimming root
+        bst2.insert("some data", 3);
+        bst2.insert("some data", 2);
+        bst2.insert("some data", 1);
+        bst2.trim(0, 2);
+        bst_str = bst2.to_string();
+        if (bst_str != "2 1")
+        {
+            cout << "Incorrect tree after trimming 3 2 1 with low=0, high=2. Expected 2 1 but got : " << bst_str << endl;
+        }
+        bst2.trim(2, 4);
+        bst_str = bst2.to_string();
+        if (bst_str != "2")
+        {
+            cout << "Incorrect tree after trimming 2 1 with low=2, high=4. Expected 2 but got : " << bst_str << endl;
         }
     }
     catch (exception &e)
@@ -431,14 +948,14 @@ void time_test()
 {
     BST<string, int> bst;
     // Insert many elements
-    int vals[8] = {6, 1, 2, 7, 2, 8, 9, 10};
+    int vals[8] = {6,1,2,7,2,8,9,10};
     for (int i = 0; i < 8; i++)
     {
         bst.insert("data", i);
     }
     BST<string, int> bst1;
     // Insert many elements
-    int vals2[12] = {5, 1, 3, 7, 1, 8, 2, 10, 1, 2, 142, 12};
+    int vals2[12] = {5,1,3,7,1,8,2,10,1,2,142,12};
     for (int i = 0; i < 12; i++)
     {
         bst1.insert("data", i);
@@ -475,7 +992,7 @@ void time_test()
     total += elapsed.count();
 
     begin = std::chrono::high_resolution_clock::now();
-    bst.trim(3, 9);
+    bst.trim(3,9);
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     cout << "trim time test took " << elapsed.count() << " nanoseconds" << endl;
