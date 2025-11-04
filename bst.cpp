@@ -480,37 +480,25 @@ typename BST<Data, Key>::Node *BST<Data, Key>::trim_helper(Node *n, const Key &l
     if (!n)
         return nullptr;
 
-    // Trim children first (post-order)
-    n->left = trim_helper(n->left, low, high, n);
-    n->right = trim_helper(n->right, low, high, n);
-
-    // Now decide about n
+    // If current node is less than low, entire left subtree can be ignored
     if (n->key < low)
     {
-        Node *r = n->right; // nodes to keep from this subtree
-        // unlink and delete current node
-        n->left = nullptr;
-        n->right = nullptr;
-        n->p = nullptr;
+        Node *r = trim_helper(n->right, low, high, parent);
         delete n;
-        if (r)
-            r->p = parent;
         return r;
     }
 
+    // If current node is greater than high, entire right subtree can be ignored
     if (n->key > high)
     {
-        Node *l = n->left;
-        n->left = nullptr;
-        n->right = nullptr;
-        n->p = nullptr;
+        Node *l = trim_helper(n->left, low, high, parent);
         delete n;
-        if (l)
-            l->p = parent;
         return l;
     }
 
-    // n is within [low, high] — keep it
+    // Current node is within range, trim both children
+    n->left = trim_helper(n->left, low, high, n);
+    n->right = trim_helper(n->right, low, high, n);
     n->p = parent;
     return n;
 }
