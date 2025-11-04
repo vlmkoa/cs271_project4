@@ -569,7 +569,15 @@ void test_min_data()
         {
             cout << "Incorrect result of min_data. Expected \"5 data\" but got : " << min_str << endl;
         }
+        // min is negative
+        balanced_bst.insert("-2 data", -2);
+        min_str = balanced_bst.min_data();
+        if (min_str != "-2 data")
+        {
+            cout << "Incorrect result of min_data. Expected \"-2 data\" but got : " << min_str << endl;
+        }
         // min is alone
+        balanced_bst.remove(-2);
         balanced_bst.remove(7);
         balanced_bst.remove(6);
         balanced_bst.remove(9);
@@ -643,7 +651,15 @@ void test_min_key()
         {
             cout << "Incorrect result of min_key. Expected 5 but got : " << min_k << endl;
         }
+        // min is negative
+        balanced_bst.insert("-2 data", -2);
+        min_k = balanced_bst.min_key();
+        if (min_k != -2)
+        {
+            cout << "Incorrect result of min_data. Expected -2 but got : " << min_k << endl;
+        }
         // min is alone
+        balanced_bst.remove(-2);
         balanced_bst.remove(10);
         balanced_bst.remove(8);
         balanced_bst.remove(9);
@@ -715,6 +731,40 @@ void test_successor()
         {
             cout << "Incorrect result of successor of 11. Expected 0 but got : " << succ << endl;
         }
+        // duplicate successor
+        for (int i = 0; i < 10; i++)
+        {
+            balanced_bst.insert(to_string(vals[i]) + " data", vals[i]);
+        }
+        succ = balanced_bst.successor(7);
+        if (succ != 7)
+        {
+            cout << "Incorrect result of successor of 7. Expected 7 but got : " << succ << endl;
+        }
+        succ = balanced_bst.successor(5);
+        if (succ != 5)
+        {
+            cout << "Incorrect result of successor of 5. Expected 5 but got : " << succ << endl;
+        }
+        succ = balanced_bst.successor(4);
+        if (succ != 4)
+        {
+            cout << "Incorrect result of successor of 4. Expected 4 but got : " << succ << endl;
+        }
+        // low keys
+        balanced_bst.insert("data", 0);
+        succ = balanced_bst.successor(0);
+        if (succ != 1)
+        {
+            cout << "Incorrect result of successor of 0. Expected 1 but got : " << succ << endl;
+        }
+        balanced_bst.insert("data", -1);
+        succ = balanced_bst.successor(-1);
+        if (succ != 0)
+        {
+            cout << "Incorrect result of successor of -1. Expected 0 but got : " << succ << endl;
+        }
+
 
         // right unbalanced
         int order[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
@@ -820,6 +870,16 @@ void test_in_order()
         {
             cout << "Incorrect in_order result after inserting keys {5, 2, 7, 1, 3, 4, 6, 9, 8, 10}. Expected 1 2 3 4 5 6 7 8 9 10 but got : " << bst_str << endl;
         }
+        // in order duplicates
+        for (int i = 0; i < 10; i++)
+        {
+            balanced_bst.insert("some data", vals[i]);
+        }
+        bst_str = balanced_bst.in_order();
+        if (bst_str != "1 1 2 2 3 3 4 4 5 5 6 6 7 7 8 8 9 9 10 10")
+        {
+            cout << "Incorrect in_order result after inserting keys {5, 2, 7, 1, 3, 4, 6, 9, 8, 10} twice. Expected 1 1 2 2 3 3 4 4 5 5 6 6 7 7 8 8 9 9 10 10 but got : " << bst_str << endl;
+        }
     }
     catch (exception &e)
     {
@@ -872,7 +932,23 @@ void test_trim()
         {
             cout << "Incorrect tree after trimming 3 0 4 2 1 twice with low=1, high=3. Expected 3 2 1 but got : " << bst_str << endl;
         }
-
+        // trimming duplicates
+        for (int i = 0; i < 10; i++)
+        {
+            bst2.insert(to_string(vals2[i]) + " data", vals2[i%5]);
+        }
+        bst2.trim(1, 3);
+        bst_str = bst2.to_string();
+        if (bst_str != "3 2 3 1 2 3 1 2 1")
+        {
+            cout << "Incorrect tree after trimming 3 2 3 1 2 4 0 1 2 3 4 0 1 with low=1, high=3. Expected 3 2 3 1 2 3 1 2 1 but got : " << bst_str << endl;
+        }
+        bst2.remove(3);
+        bst2.remove(3);
+        bst2.remove(1);
+        bst2.remove(1);
+        bst2.remove(2);
+        bst2.remove(2);
         // trimming out of bounds
         bst2.trim(4, 5);
         bst_str = bst2.to_string();
@@ -936,6 +1012,63 @@ void test_binhex()
         if (hex2 != expected_hex2)
         {
             cout << "Incorrect result converting " << bin2 << " to hex. Expected : " << expected_hex2 << ", but got : " << hex2 << endl;
+        }
+    }
+    catch (exception &e)
+    {
+        cerr << "Error converting binary to hex : " << e.what() << endl;
+    }
+
+    try
+    {
+        BST<string, string> *bst3 = create_bst("binhex.txt");
+        string bin3 = "11111010100101";
+        string expected_hex3 = "3EA5";
+
+        string hex3 = convert(bst3, bin3);
+        delete bst3;
+
+        if (hex3 != expected_hex3)
+        {
+            cout << "Incorrect result converting " << bin3 << " to hex. Expected : " << expected_hex3 << ", but got : " << hex3 << endl;
+        }
+    }
+    catch (exception &e)
+    {
+        cerr << "Error converting binary to hex : " << e.what() << endl;
+    }
+
+    try
+    {
+        BST<string, string> *bst3 = create_bst("binhex.txt");
+        string bin3 = "0";
+        string expected_hex3 = "0";
+
+        string hex3 = convert(bst3, bin3);
+        delete bst3;
+
+        if (hex3 != expected_hex3)
+        {
+            cout << "Incorrect result converting " << bin3 << " to hex. Expected : " << expected_hex3 << ", but got : " << hex3 << endl;
+        }
+    }
+    catch (exception &e)
+    {
+        cerr << "Error converting binary to hex : " << e.what() << endl;
+    }
+
+    try
+    {
+        BST<string, string> *bst3 = create_bst("binhex.txt");
+        string bin3 = "1";
+        string expected_hex3 = "1";
+
+        string hex3 = convert(bst3, bin3);
+        delete bst3;
+
+        if (hex3 != expected_hex3)
+        {
+            cout << "Incorrect result converting " << bin3 << " to hex. Expected : " << expected_hex3 << ", but got : " << hex3 << endl;
         }
     }
     catch (exception &e)
