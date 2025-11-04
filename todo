@@ -1,5 +1,5 @@
 [-] make makefile to create usecase.exe
-[ ] add more test cases (edge + template cases)
+[-] add more test cases (edge + template cases)
 [-] fix remove returning not empty when all items were removed
 [ ] review the algorithm
 [ ] documentation
