@@ -5,8 +5,24 @@
 
 using namespace std;
 
+// function declarations
 BST<string, string> *create_bst(string fname);
 string convert(BST<string, string> *bst, string bin);
+
+// function definitions
+
+/**
+ * create_bst: this function reads the file name
+ * containing the hex data, and binary key pairs
+ * and puts the elements from each line into BST
+ * based on the key of each pair.
+ *
+ * Pre-condition: File must contains data that
+ * conforms to "hex, binary" format.
+ *
+ * Post-condition: A BST created with nodes
+ * made of data and key in the files.
+ */
 
 BST<string, string> *create_bst(string fname)
 {
@@ -34,10 +50,10 @@ BST<string, string> *create_bst(string fname)
             cerr << "Warning: Invalid format at line " << line_num << ": " << line << endl;
             continue;
         }
-        
+
         string hex_string = line.substr(0, comma_pos);
         string binary = line.substr(comma_pos + 1);
-        
+
         // Validate binary string contains only 0s and 1s
         bool valid = true;
         for (char c : binary)
@@ -49,7 +65,7 @@ BST<string, string> *create_bst(string fname)
                 break;
             }
         }
-        
+
         if (valid && !binary.empty() && !hex_string.empty())
         {
             // Insert with binary as KEY (for lookup) and hex as DATA
@@ -61,6 +77,17 @@ BST<string, string> *create_bst(string fname)
     return bst;
 }
 
+/**
+ * convert: the function parses the input binary
+ * value uses the BST to find equivalent hex
+ * values return a string of equivalent final
+ * hex
+ *
+ * Pre-condition: None
+ *
+ * Post-condition: a string of equivalent hex
+ * value is returned
+ */
 string convert(BST<string, string> *bst, string bin)
 {
     // Validate input
@@ -69,12 +96,12 @@ string convert(BST<string, string> *bst, string bin)
         cerr << "Error: BST is null" << endl;
         return "";
     }
-    
+
     if (bin.empty())
     {
         return "";
     }
-    
+
     // Validate binary string
     for (char c : bin)
     {
@@ -103,14 +130,14 @@ string convert(BST<string, string> *bst, string bin)
 
         // Look up the hex string for this 4-bit chunk
         string hex_string = bst->get(chunk);
-        
+
         // Check if lookup failed (empty string means not found)
         if (hex_string.empty())
         {
             cerr << "Error: No mapping found for binary chunk '" << chunk << "'" << endl;
             return "";
         }
-        
+
         result = hex_string + result; // Prepend to maintain order
     }
 
