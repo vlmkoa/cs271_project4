@@ -111,14 +111,6 @@ template <class Data, class Key>
 Data BST<Data, Key>::get(const Key &k)
 {
     Node *cur = root;
-    // find node with key
-    // while (cur && cur->key != k)
-    // {
-    //     if (cur->key < k)
-    //         cur = cur->right;
-    //     else
-    //         cur = cur->left;
-    // }
     move_to_key(cur, k);
     if (cur == nullptr)
     {
@@ -240,54 +232,34 @@ void BST<Data, Key>::remove(const Key &k)
 {
     // find node with key
     Node *cur = root;
-    // while (cur != nullptr && cur->key != k)
-    // {
-    //     if (cur->key < k)
-    //         cur = cur->right;
-    //     else
-    //         cur = cur->left;
-    // }
     move_to_key(cur, k);
     if (!cur)
     {
         cout << "No node with provided key" << endl;
         return;
     }
-    // if cur has one child then its only child's subtree maintains
-    // comparative property of cur relative to cur's parent. Transplanting
-    // the child using transplant(). If cur has no children, then its spot
-    // becomes a nullptr.
-    // if (!cur->left && !cur->right && root == cur) {
-    // root = nullptr;
-    // delete cur;
-    //}
-    /*else */ if (!cur->left)
+    // if cur has >two children, move child's subtree to cur
+    if (!cur->left)
     {
-        transplant(cur, cur->right); // now right child of cur becomes child of cur's parent
+        transplant(cur, cur->right);
     }
     else if (!cur->right)
     {
-        transplant(cur, cur->left); // now left child of cur becomes child of cur's parent
+        transplant(cur, cur->left);
     }
     // if both children present
     else
     {
         // find the children successor of the Node
         Node *suc = cur->right;
-        // while (suc->left)
-        // {
-        //     suc = suc->left;
-        // }
         move_to_min(suc);
         if (suc->p != cur)
         {
-            transplant(suc, suc->right); // replace suc with suc->right so that its parent can get remaining subtree of suc's children
-            // suc then takes right child of cur
+            transplant(suc, suc->right); // replace suc with subtree rooted at suc->right
             suc->right = cur->right;
             suc->right->p = suc;
         }
         transplant(cur, suc); // cur's parent replace cur with subtree rooted at suc
-        // suc takes left child of cur
         suc->left = cur->left;
         suc->left->p = suc;
     }
