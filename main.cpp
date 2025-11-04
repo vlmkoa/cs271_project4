@@ -1,3 +1,10 @@
+//
+//  main.cpp
+//  CS 271 BST Project
+//
+//  Created by Sunho, Ava, Ryan
+//
+
 #include <iostream>
 #include <string>
 #include "bst.h"

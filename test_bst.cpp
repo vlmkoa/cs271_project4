@@ -1,8 +1,8 @@
 //
-//  test_bst_example.cpp
+//  test_bst.cpp
 //  CS 271 BST Project
 //
-//  Created by Ava, Sunho, Ryan
+//  Created by Sunho, Ava, Ryan
 //
 
 #include <stdlib.h>
