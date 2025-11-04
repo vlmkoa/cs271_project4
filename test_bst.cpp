@@ -40,7 +40,7 @@ void test_empty()
         }
         bst.remove(2);
         string bst_str = bst.to_string();
-        if (bst.empty())
+        if (!bst.empty())
         {
             cout << "Incorrect empty result when all items were removed from bst. Result: " << bst_str << " end result." << endl;
         }
@@ -96,7 +96,7 @@ void test_insert()
         {
             cout << "Incorrect result of inserting keys {5, 2, 7, 1, 3, 4, 6, 9, 8, 10}. Expected 5 2 7 1 3 6 9 4 8 10 but got : " << bst_str << endl;
         }
-        
+
         // insert balanced keys again
         for (int i = 0; i < 10; i++)
         {
@@ -431,14 +431,14 @@ void time_test()
 {
     BST<string, int> bst;
     // Insert many elements
-    int vals[8] = {6,1,2,7,2,8,9,10};
+    int vals[8] = {6, 1, 2, 7, 2, 8, 9, 10};
     for (int i = 0; i < 8; i++)
     {
         bst.insert("data", i);
     }
     BST<string, int> bst1;
     // Insert many elements
-    int vals2[12] = {5,1,3,7,1,8,2,10,1,2,142,12};
+    int vals2[12] = {5, 1, 3, 7, 1, 8, 2, 10, 1, 2, 142, 12};
     for (int i = 0; i < 12; i++)
     {
         bst1.insert("data", i);
@@ -475,7 +475,7 @@ void time_test()
     total += elapsed.count();
 
     begin = std::chrono::high_resolution_clock::now();
-    bst.trim(3,9);
+    bst.trim(3, 9);
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     cout << "trim time test took " << elapsed.count() << " nanoseconds" << endl;

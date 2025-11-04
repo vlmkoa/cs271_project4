@@ -6,18 +6,44 @@
 
 using namespace std;
 
+/**=====================================================
+ *   BST(): Constructor that creates an empty binary
+ *   search tree by initializing root to nullptr.
+ *
+ *   Precondition: None
+ *
+ *   Postcondition: Empty BST created with root = nullptr
+ *=======================================================*/
 template <class Data, class Key>
 BST<Data, Key>::BST()
 {
     root = nullptr;
 }
 
+/**=====================================================
+ *   ~BST(): Destructor that deallocates all nodes in
+ *   the tree by calling clear_subtree on the root.
+ *
+ *   Precondition: None
+ *
+ *   Postcondition: All nodes in the tree are deleted
+ *   and memory is freed.
+ *=======================================================*/
 template <class Data, class Key>
 BST<Data, Key>::~BST()
 {
     clear_subtree(root);
 }
 
+/**=====================================================
+ *   empty(): Checks whether the binary search tree
+ *   is empty by testing if root is nullptr.
+ *
+ *   Precondition: None
+ *
+ *   Postcondition: Returns true if tree is empty
+ *   (root == nullptr), false otherwise.
+ *=======================================================*/
 template <class Data, class Key>
 bool BST<Data, Key>::empty()
 {
@@ -134,6 +160,16 @@ void BST<Data, Key>::transplant(Node *u, Node *v)
         v->p = u->p;
     }
 }
+/**=====================================================
+ *   move_to_key(cur, k): Helper function that moves
+ *   the current pointer to the node with key k in the
+ *   tree, or to nullptr if key not found.
+ *
+ *   Precondition: cur is a valid pointer (possibly nullptr)
+ *
+ *   Postcondition: cur points to the node with key k,
+ *   or nullptr if no such node exists.
+ *=======================================================*/
 template <class Data, class Key>
 void BST<Data, Key>::move_to_key(Node *&cur, const Key &k)
 {
@@ -150,6 +186,17 @@ void BST<Data, Key>::move_to_key(Node *&cur, const Key &k)
     }
 }
 
+/**=====================================================
+ *   move_to_min(cur): Helper function that moves
+ *   the current pointer to the node with minimum key
+ *   in the subtree rooted at cur.
+ *
+ *   Precondition: cur is a valid pointer (possibly nullptr)
+ *
+ *   Postcondition: cur points to the leftmost node
+ *   (minimum key) in the subtree, or remains nullptr
+ *   if cur was nullptr.
+ *=======================================================*/
 template <class Data, class Key>
 void BST<Data, Key>::move_to_min(Node *&cur)
 {
@@ -159,6 +206,17 @@ void BST<Data, Key>::move_to_min(Node *&cur)
     }
 }
 
+/**=====================================================
+ *   move_to_max(cur): Helper function that moves
+ *   the current pointer to the node with maximum key
+ *   in the subtree rooted at cur.
+ *
+ *   Precondition: cur is a valid pointer (possibly nullptr)
+ *
+ *   Postcondition: cur points to the rightmost node
+ *   (maximum key) in the subtree, or remains nullptr
+ *   if cur was nullptr.
+ *=======================================================*/
 template <class Data, class Key>
 void BST<Data, Key>::move_to_max(Node *&cur)
 {
@@ -166,11 +224,6 @@ void BST<Data, Key>::move_to_max(Node *&cur)
     {
         cur = cur->right;
     }
-}
-
-template <class Data, class Key>
-void BST<Data, Key>::move_to_successor(Node *&cur)
-{
 }
 
 /**=====================================================
@@ -241,6 +294,16 @@ void BST<Data, Key>::remove(const Key &k)
     delete cur;
 }
 
+/**=====================================================
+ *   max_data(): Returns the data associated with the
+ *   maximum key in the tree. Returns default Data value
+ *   if tree is empty.
+ *
+ *   Precondition: None
+ *
+ *   Postcondition: Returns the data of the node with
+ *   the maximum key, or Data{} if tree is empty.
+ *=======================================================*/
 template <class Data, class Key>
 Data BST<Data, Key>::max_data()
 {
@@ -251,6 +314,15 @@ Data BST<Data, Key>::max_data()
     return cur->data;
 }
 
+/**=====================================================
+ *   max_key(): Returns the maximum key in the tree.
+ *   Returns default Key value if tree is empty.
+ *
+ *   Precondition: None
+ *
+ *   Postcondition: Returns the maximum key in the tree,
+ *   or Key{} if tree is empty.
+ *=======================================================*/
 template <class Data, class Key>
 Key BST<Data, Key>::max_key()
 {
@@ -261,6 +333,16 @@ Key BST<Data, Key>::max_key()
     return cur->key;
 }
 
+/**=====================================================
+ *   min_data(): Returns the data associated with the
+ *   minimum key in the tree. Returns default Data value
+ *   if tree is empty.
+ *
+ *   Precondition: None
+ *
+ *   Postcondition: Returns the data of the node with
+ *   the minimum key, or Data{} if tree is empty.
+ *=======================================================*/
 template <class Data, class Key>
 Data BST<Data, Key>::min_data()
 {
@@ -271,6 +353,15 @@ Data BST<Data, Key>::min_data()
     return cur->data;
 }
 
+/**=====================================================
+ *   min_key(): Returns the minimum key in the tree.
+ *   Returns default Key value if tree is empty.
+ *
+ *   Precondition: None
+ *
+ *   Postcondition: Returns the minimum key in the tree,
+ *   or Key{} if tree is empty.
+ *=======================================================*/
 template <class Data, class Key>
 Key BST<Data, Key>::min_key()
 {
@@ -281,6 +372,17 @@ Key BST<Data, Key>::min_key()
     return cur->key;
 }
 
+/**=====================================================
+ *   successor(k): Returns the successor key for the
+ *   given key k. The successor is the smallest key that
+ *   is larger than k. Returns Key{} if k is not in tree
+ *   or if k has no successor.
+ *
+ *   Precondition: None
+ *
+ *   Postcondition: Returns the successor key if k exists
+ *   in tree and has a successor. Returns Key{} otherwise.
+ *=======================================================*/
 template <class Data, class Key>
 Key BST<Data, Key>::successor(const Key &k)
 {
@@ -308,6 +410,16 @@ Key BST<Data, Key>::successor(const Key &k)
     return suc->key;
 }
 
+/**=====================================================
+ *   in_order(): Returns a string representation of
+ *   all keys in the tree in ascending order, separated
+ *   by single spaces.
+ *
+ *   Precondition: None
+ *
+ *   Postcondition: Returns a string with keys in
+ *   ascending order, space-separated.
+ *=======================================================*/
 template <class Data, class Key>
 string BST<Data, Key>::in_order()
 {
@@ -317,6 +429,17 @@ string BST<Data, Key>::in_order()
     return ss.str();
 }
 
+/**=====================================================
+ *   in_order_helper(curr, ss, first): Helper function
+ *   for in_order() that performs recursive in-order
+ *   traversal and builds the string of keys.
+ *
+ *   Precondition: ss is a valid stringstream, first
+ *   indicates if this is the first key being added.
+ *
+ *   Postcondition: Keys from subtree rooted at curr
+ *   are added to ss in ascending order.
+ *=======================================================*/
 template <class Data, class Key>
 void BST<Data, Key>::in_order_helper(Node *curr, stringstream &ss, bool &first)
 {
@@ -331,6 +454,15 @@ void BST<Data, Key>::in_order_helper(Node *curr, stringstream &ss, bool &first)
     in_order_helper(curr->right, ss, first);
 }
 
+/**=====================================================
+ *   clear_subtree(n): Helper function that recursively
+ *   deletes all nodes in the subtree rooted at n.
+ *
+ *   Precondition: n is a valid pointer (possibly nullptr)
+ *
+ *   Postcondition: All nodes in subtree rooted at n
+ *   are deleted and memory is freed.
+ *=======================================================*/
 template <class Data, class Key>
 void BST<Data, Key>::clear_subtree(Node *n)
 {
@@ -341,12 +473,35 @@ void BST<Data, Key>::clear_subtree(Node *n)
     delete n;
 }
 
+/**=====================================================
+ *   trim(low, high): Removes all nodes from the tree
+ *   whose keys are outside the interval [low, high].
+ *   Preserves the relative structure of remaining nodes.
+ *
+ *   Precondition: low <= high
+ *
+ *   Postcondition: Only nodes with keys in [low, high]
+ *   remain in the tree. The relative parent-child
+ *   relationships are preserved.
+ *=======================================================*/
 template <class Data, class Key>
 void BST<Data, Key>::trim(const Key &low, const Key &high)
 {
     root = trim_helper(root, low, high, nullptr);
 }
 
+/**=====================================================
+ *   trim_helper(n, low, high, parent): Helper function
+ *   that recursively trims the subtree rooted at n to
+ *   remove nodes outside [low, high] interval.
+ *
+ *   Precondition: low <= high, parent is the parent of n
+ *
+ *   Postcondition: Returns pointer to the root of the
+ *   trimmed subtree. Nodes outside [low, high] are deleted.
+ *   If n->key < low, return right subtree. If n->key > high,
+ *   return left subtree. Otherwise return n with trimmed children.
+ *=======================================================*/
 template <class Data, class Key>
 typename BST<Data, Key>::Node *BST<Data, Key>::trim_helper(Node *n, const Key &low, const Key &high, Node *parent)
 {
