@@ -1,3 +1,10 @@
+//
+//  bst.h
+//  CS 271 BST Project
+//
+//  Created by Sunho, Ava, Ryan
+//
+
 #ifndef BST_H
 #define BST_H
 
