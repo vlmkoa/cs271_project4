@@ -27,7 +27,7 @@ BST<string, string> *create_bst(string fname)
         if (line.empty())
             continue;
 
-        // Parse the line: "hexstring,binaryString"
+        // Parse the line: "hex,binary" format
         size_t comma_pos = line.find(',');
         if (comma_pos == string::npos)
         {
