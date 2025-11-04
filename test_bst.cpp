@@ -120,6 +120,32 @@ void test_insert()
         {
             cout << "Incorrect result of inserting letters a-j in reverse order. Expected j i h g f e d c b a but got : " << diff_str << endl;
         }
+
+        // insert balanced, float data, float key
+        float flts[10] = {5.0, 6.0, 5.5, 0.6, 2.8, 7.6, 4.99, 0.3, 7.7, 9.8};
+        BST<float, float> float_bst;
+        for (int i = 0; i < 10; i++)
+        {
+            float_bst.insert((float)i + 0.1, flts[i]);
+        }
+        string float_str = float_bst.to_string();
+        if (float_str != "5 0.6 6 0.3 2.8 5.5 7.6 4.99 7.7 9.8")
+        {
+            cout << "Incorrect result of inserting floats. Expected 5 0.6 6 0.3 2.8 5.5 7.6 4.99 7.7 9.8 but got : " << float_str << endl;
+        }
+
+        // insert balanced, string data, char key
+        char chrs[10] = {'e','c','g','a','d','f','i','b','h','j'};
+        BST<string, char> char_bst;
+        for (int i = 0; i < 10; i++)
+        {
+            char_bst.insert("dataaaa",chrs[i]);
+        }
+        string char_str = char_bst.to_string();
+        if (char_str != "e c g a d f i b h j")
+        {
+            cout << "Incorrect result of inserting chars. Expected e c g a d f i b h j but got : " << char_str << endl;
+        }
     }
     catch (exception &e)
     {
